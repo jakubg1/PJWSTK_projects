@@ -1,0 +1,3 @@
+- **task1**: Prints prime numbers in a user-chosen range.
+- **task2**: Prints amicable numbers in a user-chosen range.
+- **task3**: Prints an *n*-th Fibonacci number specified by the user.
