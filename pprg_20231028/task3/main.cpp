@@ -4,6 +4,9 @@
 // Task 3: Rock Paper Scissors
 
 int main() {
+    // randomize RNG
+    std::srand(time(NULL));
+
     const std::string SYMBOLS[] = {"kamien", "papier", "nozyce"};
     int playerSymbol, cpuSymbol;
     std::string playerGuess;
