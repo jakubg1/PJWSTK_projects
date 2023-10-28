@@ -47,7 +47,7 @@ int main() {
         
         std::cout << "Gramy jeszcze raz? (wpisz Y)";
         std::cin >> playerGuess;
-        if (playerGuess.compare("Y") != 0)
+        if (playerGuess.compare("Y") != 0 && playerGuess.compare("y") != 0)
             break;
     }
 
