@@ -9,7 +9,6 @@ int main() {
     std::string playerGuess;
 
     while (true) {
-        int v = std::rand();
         std::cout << "Kamien, papier czy nozyce? ";
         std::cin >> playerGuess;
 
@@ -43,7 +42,10 @@ int main() {
         else
             std::cout << "Przegrywasz..." << std::endl;
         
-        std::cout << "Gramy jeszcze raz!" << std::endl << std::endl << std::endl;
+        std::cout << "Gramy jeszcze raz? (wpisz Y)";
+        std::cin >> playerGuess;
+        if (playerGuess.compare("Y") != 0)
+            break;
     }
 
     return 0;
