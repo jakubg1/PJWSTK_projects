@@ -104,9 +104,9 @@ int main() {
     std::cout << "Symbol Newtona (7, 5) = " << newtonSymbolIter(7, 5) << " = " << newtonSymbolRecur(7, 5) << std::endl;
     std::cout << "Symbol Newtona (0, 0) = " << newtonSymbolIter(0, 0) << " = " << newtonSymbolRecur(0, 0) << std::endl;
     std::cout << "Wersja iteracyjna: Symbol Newtona (33, 20) = ";
-    std::cout << newtonSymbolIter(32, 20) << std::endl;
+    std::cout << newtonSymbolIter(33, 20) << std::endl;
     std::cout << "Wersja rekursyjna: Symbol Newtona (33, 20) = ";
-    std::cout << newtonSymbolRecur(32, 20) << std::endl;
+    std::cout << newtonSymbolRecur(33, 20) << std::endl;
 
     std::cout << "Zadanie 2b." << std::endl;
     std::cout << "NWD(492, 420) = " << biggestCommonDivisorIter(492, 420) << " = " << biggestCommonDivisorIter(492, 420) << std::endl;
