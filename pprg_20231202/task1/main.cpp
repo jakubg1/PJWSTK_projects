@@ -39,7 +39,7 @@ void fastSort(int l, int r) {
     }
 
     // Some debug code :>
-    
+    /*
     std::cout << "Podczas sortowania (l=" << l << " r=" << r << "): ";
     for (int i = 0; i < TABLE_SIZE; i++) {
         if (i == l) {
@@ -54,7 +54,7 @@ void fastSort(int l, int r) {
         }
     }
     std::cout << "  mid = " << mid << std::endl;
-    
+    */
 
     // Sort both sides.
     fastSort(l, mid - 1);
