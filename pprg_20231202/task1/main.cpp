@@ -39,22 +39,22 @@ void fastSort(int l, int r) {
     }
 
     // Some debug code :>
-    /*
+    
     std::cout << "Podczas sortowania (l=" << l << " r=" << r << "): ";
     for (int i = 0; i < TABLE_SIZE; i++) {
         if (i == l) {
-            std::cout << "[";
+            std::cout << "[ ";
         }
         if (i == mid) {
             std::cout << "| ";
         }
-        std::cout << table[i] << ", ";
+        std::cout << table[i] << " ";
         if (i == r) {
             std::cout << "] ";
         }
     }
     std::cout << "  mid = " << mid << std::endl;
-    */
+    
 
     // Sort both sides.
     fastSort(l, mid - 1);
@@ -71,8 +71,8 @@ int main() {
     for (int i = 0; i < TABLE_SIZE; i++) {
         std::cout << table[i] << ", ";
     }
-    fastSort(0, TABLE_SIZE - 1);
     std::cout << std::endl;
+    fastSort(0, TABLE_SIZE - 1);
     std::cout << "Po sortowaniu: ";
     for (int i = 0; i < TABLE_SIZE; i++) {
         std::cout << table[i] << ", ";
