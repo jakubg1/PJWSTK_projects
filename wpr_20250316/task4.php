@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 4: Prime number checker
+-->
+
 <html>
 <body>
     <h1>Czy liczba jest liczbą pierwszą?</h1>

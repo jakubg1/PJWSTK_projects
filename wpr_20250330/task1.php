@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 1: Birthday calculator
+-->
+
 <h1>Data urodzenia</h1>
 <form action="task1.php" method="get">
     <label for="date">Podaj swoją datę urodzenia: </label>

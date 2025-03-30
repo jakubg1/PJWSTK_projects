@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 1: Calculator
+-->
+
 <html>
 <body>
     <h1>Kalkulator</h1>

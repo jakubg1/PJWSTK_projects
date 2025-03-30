@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 2: Hotel reservation form
+-->
+
 <?php
     // segment 1: formularz
     if (!isset($_GET["people"])) {

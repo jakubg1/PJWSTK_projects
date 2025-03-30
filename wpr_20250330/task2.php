@@ -1,3 +1,9 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 2: Two versions of the factorial function
+        and execution time comparisons
+-->
+
 <h1>Silnia i czas wykonywania</h1>
 <form action="task2.php" method="get">
     <label for="n">Podaj liczbę: </label>

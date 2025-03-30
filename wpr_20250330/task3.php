@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 3: File structure and basic directory operations
+-->
+
 <h1>Struktura plików</h1>
 <form action="task3.php" method="get">
     <label for="path">Ścieżka: </label>

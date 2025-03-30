@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 2: Prime numbers
+-->
+
 <?php
 echo "<h1>Zadanie 2</h1>";
 function print_primes($n) {

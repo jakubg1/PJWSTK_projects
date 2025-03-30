@@ -1,3 +1,8 @@
+<!--
+Code written as part of PJWSTK lessons
+Task 3: Fibonacci numbers
+-->
+
 <?php
 echo "<h1>Zadanie 3</h1>";
 function print_fibonacci($n) {
