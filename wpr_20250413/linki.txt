@@ -1,0 +1,4 @@
+https://pl.wikipedia.org/;Wikipedia
+https://google.com/;Google
+https://youtube.com/;YouTube
+https://wp.pl/;Wirtualna Polska
