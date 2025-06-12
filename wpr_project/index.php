@@ -1,4 +1,7 @@
 <?php
+// WORK IN PROGRESS!!!
+// DO NOT RATE until this notice is removed!
+
 include_once "functions.php";
 include_once "database.php";
 include_once "objects/user.php";
