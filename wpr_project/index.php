@@ -3,21 +3,36 @@
 // DO NOT RATE until this notice is removed!
 
 include_once "functions.php";
-include_once "database.php";
-include_once "objects/user.php";
+
+session_start();
 
 html_start();
+
+if (isset($_GET["logout"])) {
+    echo "<div class='success'>Wylogowano pomyślnie!</div>";
+}
+
 echo "Witaj na portalu z dwoma grami!<br/>";
-echo "Jeżeli jeszcze nie masz konta, zarejestruj się aby móc rozmawiać na czacie i śledzić swoje statystyki!<br/>";
-echo "Możesz też grać jako gość.<br/>";
-
-$user = User::create("test", "123456");
-db_save_user($user);
-echo "Hasło poprawne: " . $user->check_password("") . "<br/>";
-echo "Hasło poprawne: " . $user->check_password("123456") . "<br/>";
-
-$user2 = db_get_user($user->get_id());
-echo "Hasło poprawne: " . $user2->check_password("") . "<br/>";
-echo "Hasło poprawne: " . $user2->check_password("123456") . "<br/>";
+if (isset($_SESSION["user_id"])) {
+    $user = db_get_user($_SESSION["user_id"]);
+    if (!$user) {
+        echo "BŁĄD! Jesteś zalogowany jako nieistniejący użytkownik! Następuje reset sesji.";
+        session_destroy();
+        session_start();
+    } else {
+        echo "Witaj, <b>" . $user->get_name() . "</b>!<br/>";
+        echo "Ostatnio byłeś aktywny: <b>" . $user->get_last_active_at() . "</b><br/>";
+        echo "<a href='logout.php'>Wyloguj się</a><br/>";
+        $user->set_last_active_at();
+        db_save_user($user);
+    }
+} else {
+    echo "Jeżeli jeszcze nie masz konta, zarejestruj się aby móc rozmawiać na czacie i śledzić swoje statystyki!<br/>";
+    echo "Możesz też grać jako gość.<br/>";
+    echo "<a href='login.php'>Zaloguj się</a><br/>";
+    echo "<a href='register.php'>Rejestracja</a><br/>";
+    echo "<a href='test.php'>Test</a><br/>";
+}
 
 html_end();
+?>

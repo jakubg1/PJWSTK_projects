@@ -15,9 +15,27 @@ body {
 }
 
 #main #line {
+    background-image: linear-gradient(90deg, #0000, #0004, #0000);
     height: 2px;
     margin: 20px;
     margin-left: 25%;
     margin-right: 25%;
-    background-image: linear-gradient(90deg, #0000, #0004, #0000);
+}
+
+.success {
+    background-image: linear-gradient(#4b3, #694);
+    border: 2px solid #484;
+    border-radius: 4px;
+    width: 30%;
+    margin: auto;
+    padding: 10px;
+}
+
+.failure {
+    background-image: linear-gradient(#e41, #c53);
+    border: 2px solid #a44;
+    border-radius: 4px;
+    width: 30%;
+    margin: auto;
+    padding: 10px;
 }

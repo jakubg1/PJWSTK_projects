@@ -7,7 +7,7 @@ USE gameserver;
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(32) NOT NULL,
+    name VARCHAR(32) UNIQUE NOT NULL,
     type ENUM('user', 'admin', 'guest') NOT NULL,
     password VARCHAR(256),
     created_at TIMESTAMP,

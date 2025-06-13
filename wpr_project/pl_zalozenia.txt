@@ -105,3 +105,9 @@ endpointy do REST:
 e/
 admin/e/ban.php - zbanuj gracza
 admin/e/unban.php - odblokuj gracza
+
+
+
+
+sesja ($_SESSION):
+- user_id - ID użytkownika jako który jesteśmy zalogowani (nie istnieje jeżeli nie jesteśmy zalogowani)
