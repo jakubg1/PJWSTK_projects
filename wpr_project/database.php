@@ -43,3 +43,38 @@ function db_insert($sql, $params) {
         return false;
     }
 }
+
+// Saves an object to the database.
+// If there exists a record in the database with all primary keys matching their values, that record is updated.
+// Otherwise, a new record is created in the database.
+function db_save_object($object, $table, $keys, $primary_keys = ["id"]) {
+    // $primary_keys is not checked right now. This will become relevant when multi-primary-key tables/classes will be introduced.
+    $data = $object->pack();
+    if (isset($data["id"])) {
+        // Object exists. Update it.
+        $sql = "UPDATE " . $table . " SET ";
+        for ($i = 0; $i < count($keys); $i++) {
+            if ($i > 0)
+                $sql .= ", ";
+            $sql .= $keys[$i] . " = :" . $keys[$i];
+        }
+        $sql .= " WHERE id = :id";
+        return db_update($sql, $data);
+    } else {
+        // Object doesn't exist. Create a new record in the database.
+        unset($data["id"]);
+        $sql = "INSERT INTO " . $table . " VALUES (NULL";
+        foreach ($keys as $key) {
+            if ($key != "id") {
+                $sql .= ", :" . $key;
+            }
+        }
+        $sql .= ")";
+        $result = db_insert($sql, $data);
+        if (!$result)
+            return false;
+        // Populate the ID field.
+        $object->set_id($result);
+        return true;
+    }
+}

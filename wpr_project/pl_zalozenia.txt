@@ -39,4 +39,4 @@ Stan gry (jeszcze nie finalne)
 
 
 sesja ($_SESSION):
-- user_id - ID użytkownika jako który jesteśmy zalogowani (nie istnieje jeżeli nie jesteśmy zalogowani)
+- user_id - ID użytkownika jako który jesteśmy zalogowani (lub ID tymczasowego konta gościa)

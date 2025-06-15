@@ -67,7 +67,7 @@ class User {
     }
 
     // Packs the user data for ease of use in database functions
-    private function pack() {
+    public function pack() {
         return [
             "id" => $this->id,
             "name" => $this->name,
@@ -104,20 +104,6 @@ class User {
 
     // Saves the user to database
     public function save() {
-        $data = $this->pack();
-        if (isset($this->id)) {
-            // User exists, because it has an ID assigned.
-            return db_update("UPDATE users SET id = :id, name = :name, type = :type, password = :password, created_at = :created_at, last_active_at = :last_active_at WHERE id = :id", $data);
-        } else {
-            // User does not exist, because it has no ID assigned.
-            // Avoid an error by removing unnecessary fields.
-            unset($data["id"]);
-            $result = db_insert("INSERT INTO users VALUES (NULL, :name, :type, :password, :created_at, :last_active_at)", $data);
-            if (!$result)
-                return false;
-            // Populate the ID field.
-            $this->id = $result;
-            return true;
-        }
+        return db_save_object($this, "users", ["id", "name", "type", "password", "created_at", "last_active_at"]);
     }
 }

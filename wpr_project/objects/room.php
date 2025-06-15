@@ -54,7 +54,7 @@ class Room {
     }
 
     // Packs the room data for ease of use in database functions
-    private function pack() {
+    public function pack() {
         return [
             "id" => $this->id,
             "name" => $this->name,
@@ -79,7 +79,7 @@ class Room {
 
     // Retrieves a list of rooms by game type ("checkers" or "uno")
     public static function get_list_by_game_type($game_type) {
-        $rows = db_select("SELECT * FROM rooms JOIN games ON rooms.game_id = games.id WHERE games.game = ?", [$game_type]);
+        $rows = db_select("SELECT * FROM rooms JOIN games ON rooms.game_id = games.id WHERE games.game_type = ?", [$game_type]);
         $rooms = [];
         foreach ($rows as $row) {
             $rooms[] = Room::load($row);
@@ -89,20 +89,6 @@ class Room {
 
     // Saves the room to database
     public function save() {
-        $data = $this->pack();
-        if (isset($this->id)) {
-            // Room exists, because it has an ID assigned.
-            return db_update("UPDATE rooms SET id = :id, name = :name, game_id = :game_id, password = :password WHERE id = :id", $data);
-        } else {
-            // Room does not exist, because it has no ID assigned.
-            // Avoid an error by removing unnecessary fields.
-            unset($data["id"]);
-            $result = db_insert("INSERT INTO rooms VALUES (NULL, :name, :game_id, :password)", $data);
-            if (!$result)
-                return false;
-            // Populate the ID field.
-            $this->id = $result;
-            return true;
-        }
+        return db_save_object($this, "rooms", ["id", "name", "game_id", "password"]);
     }
 }

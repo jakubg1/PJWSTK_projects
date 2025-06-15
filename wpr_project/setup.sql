@@ -50,7 +50,7 @@ CREATE TABLE room_players (
 -- finished_at: null jeżeli gra nie została jeszcze zakończona
 CREATE TABLE games (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    game VARCHAR(16) NOT NULL,
+    game_type VARCHAR(16) NOT NULL,
     started_at TIMESTAMP,
     finished_at TIMESTAMP
 );
@@ -92,6 +92,6 @@ CREATE TABLE messages (
 INSERT INTO `rooms`(`id`, `name`, `game_id`, `password`) VALUES ('10','Test Jeden!','1',null);
 INSERT INTO `rooms`(`id`, `name`, `game_id`, `password`) VALUES ('11','Test Dwa!','2',null);
 INSERT INTO `rooms`(`id`, `name`, `game_id`, `password`) VALUES ('12','Test Trzy!','3',null);
-INSERT INTO `games`(`id`, `game`, `started_at`, `finished_at`) VALUES ('1','uno',null,null);
-INSERT INTO `games`(`id`, `game`, `started_at`, `finished_at`) VALUES ('2','checkers',null,null);
-INSERT INTO `games`(`id`, `game`, `started_at`, `finished_at`) VALUES ('3','uno',null,null);
+INSERT INTO `games`(`id`, `game_type`, `started_at`, `finished_at`) VALUES ('1','uno',null,null);
+INSERT INTO `games`(`id`, `game_type`, `started_at`, `finished_at`) VALUES ('2','checkers',null,null);
+INSERT INTO `games`(`id`, `game_type`, `started_at`, `finished_at`) VALUES ('3','uno',null,null);
