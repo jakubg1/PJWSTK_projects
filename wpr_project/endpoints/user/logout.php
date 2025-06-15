@@ -1,6 +1,6 @@
 <?php
 /*
-user_logout.php
+user/logout.php
 
 No POST parameters, session must be active!
 
@@ -9,7 +9,7 @@ Status codes:
 - 403 - user is not logged in
 */
 
-include_once "../functions.php";
+include_once "../../functions.php";
 
 session_start();
 

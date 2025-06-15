@@ -21,45 +21,7 @@ Pokoje, użytkownicy oraz logi powinny być przechowywane w bazie danych, a obra
 
 
 
-
-
-users: id, name, type, password, last_active, profile_picture
-- Użytkownicy (wliczając gości)
-- type: "guest", "user" lub "admin"
-- goście: name generowane, password null (tylko po sesji), profile_picture null
-
-sessions: user_id, token
-- Sesje zalogowanych użytkowników (w tym gości)
-- Tokeny przechowywane jako ciasteczka lub sesje?
-
-bans: id, user_id, end_date, reason
-- Lista banów nałożonych na użytkowników
-
-rooms: id, name, password, game_id
-- Lista pokoi
-- Pokoje są usuwane gdy ostatni gracz wyjdzie
-- Przy tworzeniu pokoju od razu jest tworzona gra i wrzucana w game_id
-
-room_players: room_id, user_id, owner
-- Asocjowanie pokojów z graczami
-- Wpisy usuwane razem z pokojami
-
-games: id, type, start_time, end_time
-- Lista rozegranych gier
-- Gry nie są kasowane po zakończeniu
-- type: "checkers" - warcaby, "uno" - uno
-- start_time: null jeżeli gra nie została jeszcze rozpoczęta
-- end_time: null jeżeli gra nie została jeszcze zakończona
-
-game_players: game_id, user_id, index, status
-- Asocjowanie gier z graczami
-- Gracze są dodawani do gry w momencie jej rozpoczęcia. Przydzielanie indeksów.
-- Listy graczy w grze nie można zmienić! Ktoś wyjdzie - gra przerwana.
-- index: indeks gracza, zawsze od 1 do n, używane do wskazywania graczy w grach (np. kogo ruch)
-- status: null jeżeli gra trwa/została przerwana, 1 - wygrana, -1 - przegrana, 0 - remis
-
-game_states: game_id, state_id, value
-- Zmienne przechowujące stan gier (tylko gry które obecnie trwają)
+Stan gry (jeszcze nie finalne)
 - state_id, value: Value jest VARBINARY(256) albo blob + serialize. Na przykład:
 	- checkers:
 		- turn (0x01 lub 0x02)
@@ -73,39 +35,6 @@ game_states: game_id, state_id, value
 			- karty specjalne: 0x00 - zmiana koloru, 0x01 - +4
 		- deck (n bajtów, talia kart zakrytych)
 		- play_deck (n bajtów, odkładanie kart odkrytych)
-
-messages: id, game_id, timestamp, user, message
-- Lista wiadomości wysłanych w grach
-- user: null jeżeli wiadomość systemowa
-
-
-
-
-
-
-
-
-
-pliki:
-
-db.php - zarządzanie bazą danych (wszystkie zapytania tutaj!)
-class/*.php - klasy
-
-index.php - strona główna z listą gier
-rooms.php - gra (lista pokoi w grze)
-game.php - gra (pojedynczy pokój, główne miejsce akcji)
-login.php - formularz logowania
-profile.php - profil użytkownika
-profile_edit.php - edycja profilu użytkownika
-admin/index.php - panel administratora
-admin/users.php - lista użytkowników
-
-endpointy do REST:
-
-e/
-admin/e/ban.php - zbanuj gracza
-admin/e/unban.php - odblokuj gracza
-
 
 
 

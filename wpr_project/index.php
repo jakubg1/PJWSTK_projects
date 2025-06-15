@@ -2,10 +2,8 @@
 // WORK IN PROGRESS!!!
 // DO NOT RATE until this notice is removed!
 
-include_once "functions.php";
-
+include "functions.php";
 session_start();
-
 html_start();
 
 if (isset($_GET["logout"])) {
@@ -34,5 +32,8 @@ if (isset($_SESSION["user_id"])) {
     echo "<a href='test.php'>Test</a><br/>";
 }
 
+echo "Wybierz grę:<br/>";
+echo "<a href='rooms.php?game=checkers'>Warcaby</a><br/>";
+echo "<a href='rooms.php?game=uno'>UNO</a><br/>";
+
 html_end();
-?>

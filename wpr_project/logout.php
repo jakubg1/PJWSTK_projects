@@ -1,5 +1,5 @@
 <?php
-include_once "functions.php";
+include "functions.php";
 
 html_start("Wylogowanie");
 ?>
@@ -15,7 +15,7 @@ Trwa wylogowywanie...
     }
 
     ajax(
-        "endpoints/user_logout.php",
+        "endpoints/user/logout.php",
         null,
         function(response) {
             redirect("index.php?logout=1");

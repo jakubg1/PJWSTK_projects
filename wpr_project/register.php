@@ -1,12 +1,12 @@
 <?php
-include_once "functions.php";
+include "functions.php";
 
 html_start("Rejestracja");
 ?>
 
 <div id="status" hidden="true"></div>
 Zarejestruj się
-<form id="register" action="endpoints/user_register.php" method="POST">
+<form id="register" action="endpoints/user/register.php" method="POST">
     <label for="user">Nazwa użytkownika: *</label>
     <input type="text" id="user" name="user" required="true">
     <br/>
@@ -32,6 +32,10 @@ Zarejestruj się
     registerForm(
         "register",
         function(formData) {
+            if (formData.get("user").length > 32) {
+                status("Nazwa użytkownika nie może być dłuższa niż 32 znaki!");
+                return false;
+            }
             if (formData.get("password").length < 6) {
                 status("Hasło musi mieć przynajmniej 6 znaków!");
                 return false;

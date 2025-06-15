@@ -57,6 +57,7 @@ function db_save_user(User $user) {
             $user->set_id($dbc->lastInsertId());
             return $result;
         } catch (Exception $e) {
+            // We go here if the database rejects the query (for example, a duplicate field)
             return false;
         }
     }

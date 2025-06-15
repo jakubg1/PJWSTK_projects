@@ -1,12 +1,12 @@
 <?php
-include_once "functions.php";
+include "functions.php";
 
 html_start("Zaloguj się");
 ?>
 
 <div id="status" hidden="true"></div>
 Zaloguj się
-<form id="login" action="endpoints/user_login.php" method="POST">
+<form id="login" action="endpoints/user/login.php" method="POST">
     <label for="user">Nazwa użytkownika: *</label>
     <input type="text" id="user" name="user" required="true">
     <br/>
@@ -27,7 +27,7 @@ Zaloguj się
     }
 
     if (getURLParam("register")) {
-        status("Konto założone poprawnie! Możesz się teraz zalogować.");
+        status("Konto założone poprawnie! Możesz się teraz zalogować.", true);
     }
 
     registerForm(

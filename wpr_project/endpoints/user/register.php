@@ -1,6 +1,6 @@
 <?php
 /*
-user_register.php
+user/register.php
 
 POST parameters:
 - user - username to be registered
@@ -13,7 +13,7 @@ Status codes:
 - 500 - database error
 */
 
-include_once "../functions.php";
+include_once "../../functions.php";
 
 if (empty($_POST["user"]) || empty($_POST["password"])) {
     http_response_code(400);
