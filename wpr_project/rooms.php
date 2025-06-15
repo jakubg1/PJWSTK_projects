@@ -20,7 +20,14 @@ if ($game == "checkers") {
 if ($game != "") {
     echo "Lista pokoi:<br/>";
     echo "<div id='rooms'>";
-    $rooms = db_get_room_list($game);
+    $rooms = Room::get_list_by_game_type($game);
+    if (sizeof($rooms) > 0) {
+        foreach ($rooms as $room) {
+            echo "id: " . $room->get_id() . ", name: " . $room->get_name() . "<br/>";
+        }
+    } else {
+        echo "W chwili obecnej nie ma żadnych pokoi. Załóż nowy pokój!<br/>";
+    }
     echo "</div>";
 }
 

@@ -17,6 +17,13 @@ function db_select_one($sql, $params) {
     return $sth->fetch(PDO::FETCH_ASSOC);
 }
 
+function db_select($sql, $params) {
+    $dbc = db_connect();
+    $sth = $dbc->prepare($sql);
+    $sth->execute($params);
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function db_update($sql, $params) {
     $dbc = db_connect();
     $sth = $dbc->prepare($sql);

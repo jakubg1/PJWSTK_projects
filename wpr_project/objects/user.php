@@ -3,7 +3,7 @@ class User {
     private $id;
     private $name;
     private $type;
-    private $hashed_password;
+    private $password;
     private $created_at;
     private $last_active_at;
 
@@ -31,12 +31,12 @@ class User {
         $this->type = $type;
     }
 
-    public function set_password($password) {
-        $this->hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    public function check_password($password) {
+        return password_verify($password, $this->password);
     }
 
-    public function check_password($password) {
-        return password_verify($password, $this->hashed_password);
+    public function set_password($password) {
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
     public function get_created_at() {
@@ -60,7 +60,7 @@ class User {
         $user->id = $row["id"];
         $user->name = $row["name"];
         $user->type = $row["type"];
-        $user->hashed_password = $row["password"];
+        $user->password = $row["password"];
         $user->created_at = $row["created_at"];
         $user->last_active_at = $row["last_active_at"];
         return $user;
@@ -72,7 +72,7 @@ class User {
             "id" => $this->id,
             "name" => $this->name,
             "type" => $this->type,
-            "password" => $this->hashed_password,
+            "password" => $this->password,
             "created_at" => $this->created_at,
             "last_active_at" => $this->last_active_at
         ];
@@ -81,7 +81,7 @@ class User {
     // Creates a new user
     public static function create($name, $password) {
         $user = new User();
-        $user->id = NULL;
+        $user->id = null;
         $user->name = $name;
         $user->type = "user";
         $user->set_password($password);

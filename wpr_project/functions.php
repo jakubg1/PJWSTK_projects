@@ -1,6 +1,7 @@
 <?php
 // Include everything here. This way we only need to include functions.php on any other page!
 include "database.php";
+include "objects/room.php";
 include "objects/user.php";
 
 function html_start($title = "Stuff is cooking here") {

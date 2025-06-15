@@ -30,7 +30,7 @@ CREATE TABLE bans (
 -- Przy tworzeniu pokoju od razu jest tworzona gra i wrzucana w game_id
 CREATE TABLE rooms (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(32) UNIQUE NOT NULL,
+    name VARCHAR(32) NOT NULL,
     game_id INTEGER NOT NULL,
     password VARCHAR(256)
 );
@@ -83,3 +83,15 @@ CREATE TABLE messages (
     message VARCHAR(256),
     sent_at TIMESTAMP NOT NULL
 );
+
+
+
+
+-- Test games
+
+INSERT INTO `rooms`(`id`, `name`, `game_id`, `password`) VALUES ('10','Test Jeden!','1',null);
+INSERT INTO `rooms`(`id`, `name`, `game_id`, `password`) VALUES ('11','Test Dwa!','2',null);
+INSERT INTO `rooms`(`id`, `name`, `game_id`, `password`) VALUES ('12','Test Trzy!','3',null);
+INSERT INTO `games`(`id`, `game`, `started_at`, `finished_at`) VALUES ('1','uno',null,null);
+INSERT INTO `games`(`id`, `game`, `started_at`, `finished_at`) VALUES ('2','checkers',null,null);
+INSERT INTO `games`(`id`, `game`, `started_at`, `finished_at`) VALUES ('3','uno',null,null);
