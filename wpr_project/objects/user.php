@@ -51,6 +51,33 @@ class User {
         $this->last_active_at = date("Y-m-d H:i:s");
     }
 
+    // Loads the user from given database row
+    private static function load($row) {
+        if (!$row) {
+            return null;
+        }
+        $user = new User();
+        $user->id = $row["id"];
+        $user->name = $row["name"];
+        $user->type = $row["type"];
+        $user->hashed_password = $row["password"];
+        $user->created_at = $row["created_at"];
+        $user->last_active_at = $row["last_active_at"];
+        return $user;
+    }
+
+    // Packs the user data for ease of use in database functions
+    private function pack() {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "type" => $this->type,
+            "password" => $this->hashed_password,
+            "created_at" => $this->created_at,
+            "last_active_at" => $this->last_active_at
+        ];
+    }
+
     // Creates a new user
     public static function create($name, $password) {
         $user = new User();
@@ -63,26 +90,34 @@ class User {
         return $user;
     }
 
-    // Loads the user from database
-    public static function load($row) {
-        $user = new User();
-        $user->id = $row["id"];
-        $user->name = $row["name"];
-        $user->type = $row["type"];
-        $user->hashed_password = $row["password"];
-        $user->created_at = $row["created_at"];
-        $user->last_active_at = $row["last_active_at"];
-        return $user;
+    // Retrieves a user by ID
+    public static function get($id) {
+        $row = db_select_one("SELECT * FROM users WHERE id = ?", [$id]);
+        return User::load($row);
     }
 
-    public function pack() {
-        return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "type" => $this->type,
-            "password" => $this->hashed_password,
-            "created_at" => $this->created_at,
-            "last_active_at" => $this->last_active_at
-        ];
+    // Retrieves a user by name
+    public static function get_by_name($name) {
+        $row = db_select_one("SELECT * FROM users WHERE name = ?", [$name]);
+        return User::load($row);
+    }
+
+    // Saves the user to database
+    public function save() {
+        $data = $this->pack();
+        if (isset($this->id)) {
+            // User exists, because it has an ID assigned.
+            return db_update("UPDATE users SET id = :id, name = :name, type = :type, password = :password, created_at = :created_at, last_active_at = :last_active_at WHERE id = :id", $data);
+        } else {
+            // User does not exist, because it has no ID assigned.
+            // Avoid an error by removing unnecessary fields.
+            unset($data["id"]);
+            $result = db_insert("INSERT INTO users VALUES (NULL, :name, :type, :password, :created_at, :last_active_at)", $data);
+            if (!$result)
+                return false;
+            // Populate the ID field.
+            $this->id = $result;
+            return true;
+        }
     }
 }

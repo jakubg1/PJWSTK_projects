@@ -12,7 +12,7 @@ if (isset($_GET["logout"])) {
 
 echo "Witaj na portalu z dwoma grami!<br/>";
 if (isset($_SESSION["user_id"])) {
-    $user = db_get_user($_SESSION["user_id"]);
+    $user = User::get($_SESSION["user_id"]);
     if (!$user) {
         echo "BŁĄD! Jesteś zalogowany jako nieistniejący użytkownik! Następuje reset sesji.";
         session_destroy();
@@ -22,7 +22,7 @@ if (isset($_SESSION["user_id"])) {
         echo "Ostatnio byłeś aktywny: <b>" . $user->get_last_active_at() . "</b><br/>";
         echo "<a href='logout.php'>Wyloguj się</a><br/>";
         $user->set_last_active_at();
-        db_save_user($user);
+        $user->save();
     }
 } else {
     echo "Jeżeli jeszcze nie masz konta, zarejestruj się aby móc rozmawiać na czacie i śledzić swoje statystyki!<br/>";

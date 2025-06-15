@@ -22,7 +22,7 @@ if (empty($_POST["user"]) || empty($_POST["password"])) {
     return;
 }
 
-$user = db_get_user_by_name($_POST["user"]);
+$user = User::get_by_name($_POST["user"]);
 if (empty($user)) {
     http_response_code(404);
     return;

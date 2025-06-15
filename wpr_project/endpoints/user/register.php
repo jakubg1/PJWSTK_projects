@@ -20,13 +20,13 @@ if (empty($_POST["user"]) || empty($_POST["password"])) {
     return;
 }
 
-if (db_get_user_by_name($_POST["user"])) {
+if (User::get_by_name($_POST["user"])) {
     http_response_code(409);
     return;
 }
 
 $user = User::create($_POST["user"], $_POST["password"]);
-$result = db_save_user($user);
+$result = $user->save();
 if (!$result) {
     http_response_code(500);
     return;

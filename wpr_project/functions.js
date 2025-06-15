@@ -46,7 +46,15 @@ function registerForm(id, onValidate, onSuccess, onError) {
                 contentType: false,
                 processData: false,
                 success: onSuccess,
-                error: onError
+                error: function(response) {
+                    onError(response);
+                    // Print error info to console if something has been returned
+                    // (so that when an error shows up, I can just place var_dumps for quick debugging)
+                    if (response.responseText.length > 0) {
+                        console.log("Error info:");
+                        console.log(response.responseText);
+                    }
+                }
             });
         }
     });

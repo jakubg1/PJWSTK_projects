@@ -53,7 +53,7 @@ Zarejestruj się
             let errors = {
                 409: "Ta nazwa użytkownika jest już zajęta! Musisz wybrać inną."
             };
-            status(xhrError(response, errors))
+            status(xhrError(response, errors));
         }
     );
 </script>
