@@ -7,6 +7,7 @@ include "database.php";
 include "objects/game.php";
 include "objects/room.php";
 include "objects/user.php";
+include "tick.php";
 
 function html_start($title = "Stuff is cooking here") {
     global $FS_PREFIX;

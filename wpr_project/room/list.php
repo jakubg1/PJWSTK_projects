@@ -18,7 +18,7 @@ if ($game != "") {
     if (is_user_logged_in()) {
         echo "<a href='create.php?game=" . $game . "'>Załóż nowy pokój</a><br/>";
     } else {
-        echo "<a href='../user/login.php'>Zaloguj się, aby tworzyć pokoje!</a><br/>";
+        echo "<a href='../user/login.php'>Zaloguj się, aby utworzyć pokój!</a><br/>";
     }
     echo "Lista pokoi:<br/>";
     echo "<div id='rooms'>";
@@ -31,6 +31,7 @@ if ($game != "") {
         echo "W chwili obecnej nie ma żadnych pokoi. Załóż nowy pokój!<br/>";
     }
     echo "</div>";
+    echo "<a href='../index.php'>Strona główna</a><br/>";
 }
 
 html_end();

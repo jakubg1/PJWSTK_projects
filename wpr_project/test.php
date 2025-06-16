@@ -19,5 +19,6 @@ if ($result) {
 }
 echo "Hasło poprawne: " . $user2->check_password("") . "<br/>";
 echo "Hasło poprawne: " . $user2->check_password("123456") . "<br/>";
+echo "<a href='index.php'>Strona główna</a><br/>";
 
 html_end();
