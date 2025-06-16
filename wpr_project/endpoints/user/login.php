@@ -1,6 +1,6 @@
 <?php
 /*
-user/login.php
+/endpoints/user/login.php
 
 POST parameters:
 - user - username to be registered
@@ -13,7 +13,7 @@ Status codes:
 - 404 - user does not exist
 */
 
-include_once "../../functions.php";
+include "../../functions.php";
 
 session_start();
 

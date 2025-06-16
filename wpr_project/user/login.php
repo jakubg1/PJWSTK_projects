@@ -1,31 +1,21 @@
 <?php
-include "functions.php";
+include "../functions.php";
 
 html_start("Zaloguj się");
 ?>
 
 <div id="status" hidden="true"></div>
-Zaloguj się
-<form id="login" action="endpoints/user/login.php" method="POST">
+<h1>Zaloguj się</h1>
+<form id="login" action="/endpoints/user/login.php" method="POST">
     <label for="user">Nazwa użytkownika: *</label>
     <input type="text" id="user" name="user" required="true">
-    <br/>
     <label for="password">Hasło: *</label>
     <input type="password" id="password" name="password" required="true">
-    <br/>
     <input type="submit" value="Zaloguj się">
 </form>
-<a href="index.php">Strona główna</a>
+<a href="../index.php">Strona główna</a>
 
 <script>
-    function status(message, isSuccess = false) {
-        let status = $("#status");
-        status.show();
-        status.removeClass("success failure");
-        status.addClass(isSuccess ? "success" : "failure");
-        status.text(message);
-    }
-
     if (getURLParam("register")) {
         status("Konto założone poprawnie! Możesz się teraz zalogować.", true);
     }
@@ -38,7 +28,7 @@ Zaloguj się
         function(response) {
             //status("Zalogowałeś się!", true);
             //$("#login").hide();
-            redirect("index.php");
+            redirect("/index.php");
         },
         function(response) {
             let errors = {

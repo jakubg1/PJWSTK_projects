@@ -1,12 +1,26 @@
+FS_PREFIX = "/git/PJWSTK_projects/wpr_project";
+
+// Redirects to provided URL.
 function redirect(url) {
-    window.location.replace(url);
+    window.location.replace(FS_PREFIX + url);
 }
 
+// Returns the GET parameter from the URL.
 function getURLParam(name) {
     let match = document.URL.match(name + "=(\\d+)");
     return match ? match[1] : null;
 }
 
+// Sets the status of page by accessing <div id="status">.
+function status(message, isSuccess = false) {
+    let status = $("#status");
+    status.show();
+    status.removeClass("success failure");
+    status.addClass(isSuccess ? "success" : "failure");
+    status.text(message);
+}
+
+// Returns the error message for the provided response (its code).
 function xhrError(response, messages) {
     if (messages[response.status]) {
         return messages[response.status];
@@ -18,10 +32,11 @@ function xhrError(response, messages) {
     return "Wystąpił BŁĄD NIESPODZIANKA! To się nigdy nie powinno zdarzyć! (" + response.status + ")";
 }
 
+// Sends a POST request to the provided endpoint.
 function ajax(url, data, onSuccess, onError) {
     $.ajax({
         type: "POST",
-        url: url,
+        url: FS_PREFIX + url,
         data: data,
         contentType: false,
         processData: false,
@@ -30,6 +45,7 @@ function ajax(url, data, onSuccess, onError) {
     });
 }
 
+// Binds a form and sends a POST request to the provided endpoint.
 function registerForm(id, onValidate, onSuccess, onError) {
     // https://stackoverflow.com/questions/61259511/php-submit-form-without-exit-of-page
     let form = $("#" + id);
@@ -41,7 +57,7 @@ function registerForm(id, onValidate, onSuccess, onError) {
         if (result) {
             $.ajax({
                 type: form.attr("method"),
-                url: form.attr("action"),
+                url: FS_PREFIX + form.attr("action"),
                 data: formData,
                 contentType: false,
                 processData: false,

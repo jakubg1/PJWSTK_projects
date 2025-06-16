@@ -1,5 +1,5 @@
 <?php
-include "functions.php";
+include "../functions.php";
 session_start();
 html_start();
 
@@ -18,6 +18,11 @@ if ($game == "checkers") {
 }
 
 if ($game != "") {
+    if (is_user_logged_in()) {
+        echo "<a href='create.php'>Załóż nowy pokój</a><br/>";
+    } else {
+        echo "<a href='../user/login.php'>Zaloguj się, aby tworzyć pokoje!</a><br/>";
+    }
     echo "Lista pokoi:<br/>";
     echo "<div id='rooms'>";
     $rooms = Room::get_list_by_game_type($game);

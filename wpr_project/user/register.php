@@ -1,34 +1,23 @@
 <?php
-include "functions.php";
+include "../functions.php";
 
 html_start("Rejestracja");
 ?>
 
+<h1>Zarejestruj się</h1>
 <div id="status" hidden="true"></div>
-Zarejestruj się
-<form id="register" action="endpoints/user/register.php" method="POST">
+<form id="register" action="/endpoints/user/register.php" method="POST">
     <label for="user">Nazwa użytkownika: *</label>
     <input type="text" id="user" name="user" required="true">
-    <br/>
     <label for="password">Hasło: *</label>
     <input type="password" id="password" name="password" required="true">
-    <br/>
     <label for="password">Powtórz hasło: *</label>
     <input type="password" id="password_rep" name="password_rep" required="true">
-    <br/>
     <input type="submit" value="Załóż konto">
 </form>
-<a href="index.php">Strona główna</a>
+<a href="../index.php">Strona główna</a>
 
 <script>
-    function status(message, isSuccess = false) {
-        let status = $("#status");
-        status.show();
-        status.removeClass("success failure");
-        status.addClass(isSuccess ? "success" : "failure");
-        status.text(message);
-    }
-
     registerForm(
         "register",
         function(formData) {
@@ -47,7 +36,7 @@ Zarejestruj się
             return true;
         },
         function(response) {
-            redirect("login.php?register=1");
+            redirect("/user/login.php?register=1");
         },
         function(response) {
             let errors = {
