@@ -1,20 +1,30 @@
 <?php
 include "../functions.php";
+
+// Validate the GET parameter and check if we're a logged in user.
+if (!isset($_GET["game"]) || !is_game_type_supported($_GET["game"])) {
+    echo "Nie ma takiej gry!";
+    return;
+}
 session_start();
 ensure_login();
-html_start("Załóż pokój");
-?>
 
-<div id="status" hidden="true"></div>
-<h1>Załóż nowy pokój</h1>
-<form id="form" action="/endpoints/room/create.php" method="POST">
-    <label for="name">Nazwa pokoju: *</label>
-    <input type="text" id="name" name="name" required="true">
-    <label for="password">Hasło:</label>
-    <input type="password" id="password" name="password">
-    <input type="submit" value="Załóż pokój">
-</form>
-<a href="../index.php">Strona główna</a>
+html_start("Załóż pokój");
+
+html_status_box();
+echo "<h1>Załóż nowy pokój</h1>";
+echo "<h2>Gra: " . translate_game_type($_GET["game"]) . "</h2>";
+$fields = [
+    ["id" => "name", "type" => "text", "label" => "Nazwa pokoju", "required" => true],
+    ["id" => "password", "type" => "password", "label" => "Hasło"],
+    ["id" => "game_type", "value" => $_GET["game"]],
+    ["type" => "submit", "value" => "Załóż pokój"]
+];
+html_form("form", "/endpoints/room/create.php", $fields);
+echo "<a href='../index.php'>Strona główna</a>";
+
+html_end();
+?>
 
 <script>
     registerForm(
@@ -27,17 +37,13 @@ html_start("Załóż pokój");
             return true;
         },
         function(response) {
-            redirect("/room/game.php?id=1");
+            redirect("/room/game.php");
         },
         function(response) {
             let errors = {
-                409: "Ta nazwa użytkownika jest już zajęta! Musisz wybrać inną."
+                403: "Nie jesteś zalogowany. Zaloguj się i spróbuj ponownie."
             };
             status(xhrError(response, errors));
         }
     );
 </script>
-
-<?php
-html_end();
-?>

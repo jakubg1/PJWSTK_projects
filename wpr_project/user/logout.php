@@ -2,11 +2,13 @@
 include "../functions.php";
 
 html_start("Wylogowanie");
-?>
 
-<div id="status" hidden="true"></div>
-<h1>Trwa wylogowywanie...</h1>
-<a href="../index.php">Strona główna</a>
+html_status_box();
+html_title("Trwa wylogowywanie...");
+echo "<a href='../index.php'>Strona główna</a>";
+
+html_end();
+?>
 
 <script>
     ajax(
@@ -23,7 +25,3 @@ html_start("Wylogowanie");
         }
     );
 </script>
-
-<?php
-html_end();
-?>

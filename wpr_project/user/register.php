@@ -2,24 +2,24 @@
 include "../functions.php";
 
 html_start("Rejestracja");
-?>
 
-<h1>Zarejestruj się</h1>
-<div id="status" hidden="true"></div>
-<form id="register" action="/endpoints/user/register.php" method="POST">
-    <label for="user">Nazwa użytkownika: *</label>
-    <input type="text" id="user" name="user" required="true">
-    <label for="password">Hasło: *</label>
-    <input type="password" id="password" name="password" required="true">
-    <label for="password">Powtórz hasło: *</label>
-    <input type="password" id="password_rep" name="password_rep" required="true">
-    <input type="submit" value="Załóż konto">
-</form>
-<a href="../index.php">Strona główna</a>
+html_status_box();
+html_title("Zarejestruj się");
+$fields = [
+    ["id" => "user", "type" => "text", "label" => "Nazwa użytkownika", "required" => true],
+    ["id" => "password", "type" => "password", "label" => "Hasło", "required" => true],
+    ["id" => "password_rep", "type" => "password", "label" => "Powtórz hasło", "required" => true],
+    ["type" => "submit", "value" => "Załóż konto"]
+];
+html_form("form", "/endpoints/user/register.php", $fields);
+echo "<a href='../index.php'>Strona główna</a>";
+
+html_end();
+?>
 
 <script>
     registerForm(
-        "register",
+        "form",
         function(formData) {
             if (formData.get("user").length > 32) {
                 status("Nazwa użytkownika nie może być dłuższa niż 32 znaki!");
@@ -46,7 +46,3 @@ html_start("Rejestracja");
         }
     );
 </script>
-
-<?php
-html_end();
-?>

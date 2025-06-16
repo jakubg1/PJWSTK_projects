@@ -2,18 +2,19 @@
 include "../functions.php";
 
 html_start("Zaloguj się");
-?>
 
-<div id="status" hidden="true"></div>
-<h1>Zaloguj się</h1>
-<form id="login" action="/endpoints/user/login.php" method="POST">
-    <label for="user">Nazwa użytkownika: *</label>
-    <input type="text" id="user" name="user" required="true">
-    <label for="password">Hasło: *</label>
-    <input type="password" id="password" name="password" required="true">
-    <input type="submit" value="Zaloguj się">
-</form>
-<a href="../index.php">Strona główna</a>
+html_status_box();
+html_title("Zaloguj się");
+$fields = [
+    ["id" => "user", "type" => "text", "label" => "Nazwa użytkownika", "required" => true],
+    ["id" => "password", "type" => "password", "label" => "Hasło", "required" => true],
+    ["type" => "submit", "value" => "Załóż pokój"]
+];
+html_form("form", "/endpoints/user/login.php", $fields);
+echo "<a href='../index.php'>Strona główna</a>";
+
+html_end();
+?>
 
 <script>
     if (getURLParam("register")) {
@@ -21,13 +22,13 @@ html_start("Zaloguj się");
     }
 
     registerForm(
-        "login",
+        "form",
         function(formData) {
             return true;
         },
         function(response) {
             //status("Zalogowałeś się!", true);
-            //$("#login").hide();
+            //$("#form").hide();
             redirect("/index.php");
         },
         function(response) {
@@ -39,7 +40,3 @@ html_start("Zaloguj się");
         }
     );
 </script>
-
-<?php
-html_end();
-?>

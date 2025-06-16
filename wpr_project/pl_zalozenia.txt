@@ -40,3 +40,4 @@ Stan gry (jeszcze nie finalne)
 
 sesja ($_SESSION):
 - user_id - ID użytkownika jako który jesteśmy zalogowani (lub ID tymczasowego konta gościa)
+- room_id - ID pokoju w którym jesteśmy (brak jeżeli nie jesteśmy w żadnym pokoju)

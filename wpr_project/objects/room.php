@@ -79,7 +79,7 @@ class Room {
 
     // Retrieves a list of rooms by game type ("checkers" or "uno")
     public static function get_list_by_game_type($game_type) {
-        $rows = db_select("SELECT * FROM rooms JOIN games ON rooms.game_id = games.id WHERE games.game_type = ?", [$game_type]);
+        $rows = db_select("SELECT rooms.* FROM rooms JOIN games ON rooms.game_id = games.id WHERE games.game_type = ?", [$game_type]);
         $rooms = [];
         foreach ($rows as $row) {
             $rooms[] = Room::load($row);
