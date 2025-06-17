@@ -8,7 +8,7 @@ html_title("Zaloguj się");
 $fields = [
     ["id" => "user", "type" => "text", "label" => "Nazwa użytkownika", "required" => true],
     ["id" => "password", "type" => "password", "label" => "Hasło", "required" => true],
-    ["type" => "submit", "value" => "Załóż pokój"]
+    ["type" => "submit", "value" => "Zaloguj się"]
 ];
 html_form("form", "/endpoints/user/login.php", $fields);
 echo "<a href='../index.php'>Strona główna</a>";

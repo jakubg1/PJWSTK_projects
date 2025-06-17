@@ -40,6 +40,8 @@ class Room {
     }
 
     public function check_password($password) {
+        if ($this->password == null)
+            return true;
         return password_verify($password, $this->password);
     }
 
@@ -50,20 +52,51 @@ class Room {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    // Returns a list of Users for each user which is in the room.
+    public function get_players() {
+        $players = [];
+        foreach ($this->players as $id => $data) {
+            $players[] = User::get($id);
+        }
+        return $players;
+    }
+
+    // Returns data associated with the provided player in this room.
     public function get_player_data($player) {
         return $this->players[$player->get_id()] ?? null;
     }
 
+    // Adds the provided player to the room.
     public function add_player($player) {
         $this->players[$player->get_id()] = ["last_heartbeat_at" => get_timestamp()];
     }
 
+    // Removes the provided player from the room.
     public function remove_player($player) {
         unset($this->players[$player->get_id()]);
+        if (count($this->players) == 0) {
+            return;
+        }
+        // If the provided player is the room's owner, a new owner is randomly assigned.
+        if ($this->owner == $player->get_id()) {
+            foreach ($this->players as $id => $data) {
+                $this->owner = $id;
+                break;
+            }
+        }
     }
 
+    // Updates the heartbeat timestamp for the provided player.
     public function update_player_heartbeat($player) {
         $this->players[$player->get_id()]["last_heartbeat_at"] = get_timestamp();
+    }
+
+    public function get_max_players() {
+        return get_max_players($this->get_game()->get_game_type());
+    }
+
+    public function is_full() {
+        return count($this->players) >= $this->get_max_players();
     }
 
     // Loads the room from given database row
@@ -108,6 +141,11 @@ class Room {
     // Retrieves a room by ID
     public static function get($id) {
         $row = db_select_one("SELECT * FROM rooms WHERE id = ?", [$id]);
+        $row["players"] = [];
+        $player_rows = db_select("SELECT * FROM room_players WHERE room_id = ?", [$id]);
+        foreach ($player_rows as $player_row) {
+            $row["players"][$player_row["user_id"]] = ["last_heartbeat_at" => $player_row["last_heartbeat_at"]];
+        }
         return Room::load($row);
     }
 
@@ -116,16 +154,27 @@ class Room {
         $rows = db_select("SELECT rooms.* FROM rooms JOIN games ON rooms.game_id = games.id WHERE games.game_type = ?", [$game_type]);
         $rooms = [];
         foreach ($rows as $row) {
-            $rooms[] = Room::load($row);
+            $rooms[] = Room::get($row["id"]);
         }
         return $rooms;
     }
 
-    // Saves the room to database
+    // Saves the room to database, or deletes it, if it's empty.
     public function save() {
-        $arrays = [
-            "players" => ["table" => "room_players", "field" => "room_id", "subfield" => "user_id", "subfields" => ["last_heartbeat_at"]]
-        ];
-        return db_save_object($this, "rooms", ["id", "name", "owner", "game_id", "password"], $arrays);
+        if (count($this->players) > 0) {
+            $arrays = [
+                "players" => ["table" => "room_players", "field" => "room_id", "subfield" => "user_id", "subfields" => ["last_heartbeat_at"]]
+            ];
+            return db_save_object($this, "rooms", ["id", "name", "owner", "game_id", "password"], $arrays);
+        } else {
+            $this->delete();
+        }
+    }
+
+    // Removes the room from database, as well as any relevant player entries.
+    public function delete() {
+        db_remove("DELETE FROM rooms WHERE id = ?", [$this->id]);
+        db_remove("DELETE FROM room_players WHERE room_id = ?", [$this->id]);
+        $this->id = null;
     }
 }

@@ -25,7 +25,14 @@ if ($game != "") {
     $rooms = Room::get_list_by_game_type($game);
     if (sizeof($rooms) > 0) {
         foreach ($rooms as $room) {
-            echo "id: " . $room->get_id() . ", game_id: " . $room->get_game()->get_id() . ", name: " . $room->get_name() . ", owner: " . $room->get_owner()->get_name() . "<br/>";
+            $players = $room->get_players();
+            echo $room->get_name() . " (" . count($players) . "/" . $room->get_max_players() . ") (";
+            for ($i = 0; $i < sizeof($players); $i++) {
+                if ($i > 0)
+                    echo ", ";
+                echo $players[$i]->get_name();
+            }
+            echo ") o:" . $room->get_owner()->get_name() . " <a href='join.php?id=" . $room->get_id() . "'>Dołącz</a><br/>";
         }
     } else {
         echo "W chwili obecnej nie ma żadnych pokoi. Załóż nowy pokój!<br/>";

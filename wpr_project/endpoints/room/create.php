@@ -20,6 +20,7 @@ Status codes:
 include "../../functions.php";
 
 session_start();
+$user = get_user();
 
 if (!is_user_logged_in()) {
     http_response_code(403);
@@ -31,7 +32,17 @@ if (empty($_POST["name"]) || !is_game_type_supported($_POST["game_type"])) {
     return;
 }
 
-$room = Room::create($_POST["name"], get_user());
+// Leave the old room if we were in any.
+if ($_SESSION["room_id"]) {
+    $old_room = Room::get($_SESSION["room_id"]);
+    if ($old_room) {
+        $old_room->remove_player($user);
+        $old_room->save();
+    }
+}
+
+// Create a new room with a game alongside it.
+$room = Room::create($_POST["name"], $user);
 if (!empty($_POST["password"])) {
     $room->set_password($_POST["password"]);
 }

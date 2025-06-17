@@ -108,15 +108,22 @@ function ensure_admin() {
     }
 }
 
+$GAME_TYPES = [
+    "checkers" => ["name" => "Warcaby", "max_players" => 2],
+    "uno" => ["name" => "UNO", "max_players" => 4]
+];
+
 function is_game_type_supported($game_type) {
-    return $game_type == "checkers" || $game_type == "uno";
+    global $GAME_TYPES;
+    return isset($GAME_TYPES[$game_type]);
 }
 
 function translate_game_type($game_type) {
-    switch ($game_type) {
-        case "checkers":
-            return "Warcaby";
-        case "uno":
-            return "UNO";
-    }
+    global $GAME_TYPES;
+    return $GAME_TYPES[$game_type]["name"];
+}
+
+function get_max_players($game_type) {
+    global $GAME_TYPES;
+    return $GAME_TYPES[$game_type]["max_players"];
 }

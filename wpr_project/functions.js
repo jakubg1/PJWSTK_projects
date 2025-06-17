@@ -38,8 +38,6 @@ function ajax(url, data, onSuccess, onError) {
         type: "POST",
         url: FS_PREFIX + url,
         data: data,
-        contentType: false,
-        processData: false,
         success: onSuccess,
         error: onError
     });
