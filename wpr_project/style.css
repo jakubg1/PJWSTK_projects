@@ -46,7 +46,9 @@ form input {
     display: block;
     width: 50%;
     margin: auto;
-    font-size: 120%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: 100%;
 }
 
 form input[type="submit"] {
@@ -55,6 +57,13 @@ form input[type="submit"] {
     border-right: 1px solid #271;
     border-bottom: 1px solid #271;
     margin-top: 20px;
+}
+
+form input[type="submit"]:active {
+    background-color: #4b3;
+    border: 1px solid #271;
+    border-right: 1px solid #cf8;
+    border-bottom: 1px solid #cf8;
 }
 
 #rooms {

@@ -26,7 +26,7 @@ class Game {
     }
 
     public function set_started_at() {
-        $this->started_at = date("Y-m-d H:i:s");
+        $this->started_at = get_timestamp();
     }
 
     public function get_finished_at() {
@@ -34,7 +34,7 @@ class Game {
     }
 
     public function set_finished_at() {
-        $this->finished_at = date("Y-m-d H:i:s");
+        $this->finished_at = get_timestamp();
     }
 
     // Loads the game from given database row

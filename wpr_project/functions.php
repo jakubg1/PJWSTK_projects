@@ -69,6 +69,11 @@ function html_form($id, $action, $fields) {
     echo "</form>";
 }
 
+// Returns the current time as a timestamp ready to save in the database.
+function get_timestamp() {
+    return date("Y-m-d H:i:s");
+}
+
 // Returns the current user stored in the session.
 function get_user() {
     if (!isset($_SESSION["user_id"])) {

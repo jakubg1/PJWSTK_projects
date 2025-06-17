@@ -14,7 +14,7 @@ echo "Witaj na portalu z dwoma grami!<br/>";
 if (isset($_SESSION["user_id"])) {
     $user = User::get($_SESSION["user_id"]);
     if (!$user) {
-        echo "BŁĄD! Jesteś zalogowany jako nieistniejący użytkownik! Następuje reset sesji.";
+        echo "BŁĄD! Jesteś zalogowany jako nieistniejący użytkownik! Następuje reset sesji.<br/>";
         session_destroy();
         session_start();
     } else {

@@ -12,7 +12,7 @@ CREATE TABLE users (
     name VARCHAR(32) UNIQUE NOT NULL,
     type ENUM('user', 'admin', 'guest') NOT NULL,
     password VARCHAR(256),
-    created_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP,
     last_active_at TIMESTAMP
 );
 
@@ -20,8 +20,8 @@ CREATE TABLE users (
 CREATE TABLE bans (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     user_id INTEGER NOT NULL,
-    given_at TIMESTAMP NOT NULL,
-    expires_at TIMESTAMP,
+    given_at TIMESTAMP,
+    expires_at TIMESTAMP NULL DEFAULT NULL,
     reason VARCHAR(256)
 );
 
@@ -31,16 +31,18 @@ CREATE TABLE bans (
 CREATE TABLE rooms (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
+    owner INTEGER NOT NULL,
     game_id INTEGER NOT NULL,
     password VARCHAR(256)
 );
 
 -- Asocjowanie pokojów z graczami
 -- Wpisy usuwane razem z pokojami
+-- last_heartbeat_at: aktualizowane gdy klient wyśle heartbeat, jeżeli nie będzie heartbeatu przez określony czas, gracz jest usuwany z timeoutem
 CREATE TABLE room_players (
     room_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    is_owner BOOLEAN NOT NULL
+    last_heartbeat_at TIMESTAMP
 );
 
 -- Lista rozegranych gier
@@ -51,8 +53,8 @@ CREATE TABLE room_players (
 CREATE TABLE games (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     game_type VARCHAR(16) NOT NULL,
-    started_at TIMESTAMP,
-    finished_at TIMESTAMP
+    started_at TIMESTAMP NULL DEFAULT NULL,
+    finished_at TIMESTAMP NULL DEFAULT NULL
 );
 
 -- Asocjowanie gier z graczami
@@ -81,7 +83,7 @@ CREATE TABLE messages (
     game_id INTEGER NOT NULL,
     user_id INTEGER,
     message VARCHAR(256),
-    sent_at TIMESTAMP NOT NULL
+    sent_at TIMESTAMP
 );
 
 

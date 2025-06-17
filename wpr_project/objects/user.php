@@ -48,7 +48,7 @@ class User {
     }
 
     public function set_last_active_at() {
-        $this->last_active_at = date("Y-m-d H:i:s");
+        $this->last_active_at = get_timestamp();
     }
 
     // Loads the user from given database row
@@ -85,8 +85,8 @@ class User {
         $user->name = $name;
         $user->type = "user";
         $user->set_password($password);
-        $user->created_at = date("Y-m-d H:i:s");
-        $user->last_active_at = date("Y-m-d H:i:s");
+        $user->created_at = get_timestamp();
+        $user->last_active_at = get_timestamp();
         return $user;
     }
 

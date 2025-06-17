@@ -2,8 +2,10 @@
 class Room {
     private $id;
     private $name;
+    private $owner;
     private $game_id;
     private $password;
+    private $players;
 
     public function get_id() {
         return $this->id;
@@ -19,6 +21,14 @@ class Room {
 
     public function set_name($name) {
         $this->name = $name;
+    }
+
+    public function get_owner() {
+        return User::get($this->owner);
+    }
+
+    public function set_owner($owner) {
+        $this->owner = $owner->get_id();
     }
 
     public function get_game() {
@@ -40,6 +50,22 @@ class Room {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    public function get_player_data($player) {
+        return $this->players[$player->get_id()] ?? null;
+    }
+
+    public function add_player($player) {
+        $this->players[$player->get_id()] = ["last_heartbeat_at" => get_timestamp()];
+    }
+
+    public function remove_player($player) {
+        unset($this->players[$player->get_id()]);
+    }
+
+    public function update_player_heartbeat($player) {
+        $this->players[$player->get_id()]["last_heartbeat_at"] = get_timestamp();
+    }
+
     // Loads the room from given database row
     private static function load($row) {
         if (!$row) {
@@ -48,8 +74,10 @@ class Room {
         $room = new Room();
         $room->id = $row["id"];
         $room->name = $row["name"];
+        $room->owner = $row["owner"];
         $room->game_id = $row["game_id"];
         $room->password = $row["password"];
+        $room->players = $row["players"];
         return $room;
     }
 
@@ -58,16 +86,22 @@ class Room {
         return [
             "id" => $this->id,
             "name" => $this->name,
+            "owner" => $this->owner,
             "game_id" => $this->game_id,
-            "password" => $this->password
+            "password" => $this->password,
+            "players" => $this->players
         ];
     }
 
-    // Creates a new room
-    public static function create($name) {
+    // Creates a new room.
+    // The room automatically starts with its owner added as a player!
+    public static function create($name, $owner) {
         $room = new Room();
         $room->id = null;
         $room->name = $name;
+        $room->set_owner($owner);
+        $room->players = [];
+        $room->add_player($owner);
         return $room;
     }
 
@@ -89,6 +123,9 @@ class Room {
 
     // Saves the room to database
     public function save() {
-        return db_save_object($this, "rooms", ["id", "name", "game_id", "password"]);
+        $arrays = [
+            "players" => ["table" => "room_players", "field" => "room_id", "subfield" => "user_id", "subfields" => ["last_heartbeat_at"]]
+        ];
+        return db_save_object($this, "rooms", ["id", "name", "owner", "game_id", "password"], $arrays);
     }
 }

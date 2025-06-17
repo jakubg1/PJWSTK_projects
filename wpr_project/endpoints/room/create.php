@@ -31,7 +31,7 @@ if (empty($_POST["name"]) || !is_game_type_supported($_POST["game_type"])) {
     return;
 }
 
-$room = Room::create($_POST["name"]);
+$room = Room::create($_POST["name"], get_user());
 if (!empty($_POST["password"])) {
     $room->set_password($_POST["password"]);
 }
