@@ -32,13 +32,17 @@ if ($game != "") {
                     echo ", ";
                 echo $players[$i]->get_name();
             }
-            echo ") o:" . $room->get_owner()->get_name() . " <a href='join.php?id=" . $room->get_id() . "'>Dołącz</a><br/>";
+            echo ") o:" . $room->get_owner()->get_name();
+            if ($room->has_password()) {
+                echo " (zahasłowany)";
+            }
+            echo " <a href='join.php?id=" . $room->get_id() . "'>Dołącz</a><br/>";
         }
     } else {
         echo "W chwili obecnej nie ma żadnych pokoi. Załóż nowy pokój!<br/>";
     }
     echo "</div>";
-    echo "<a href='../index.php'>Strona główna</a><br/>";
 }
+echo "<a href='../index.php'>Strona główna</a><br/>";
 
 html_end();

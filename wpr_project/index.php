@@ -20,7 +20,7 @@ if (isset($_SESSION["user_id"])) {
     } else {
         echo "Witaj, <b>" . $user->get_name() . "</b>!<br/>";
         echo "Ostatnio byłeś aktywny: <b>" . $user->get_last_active_at() . "</b><br/>";
-        echo "<a href='user/logout.php'>Wyloguj się</a><br/>";
+        echo "<a id='logout' href='index.php?logout=1'>Wyloguj się</a><br/>";
         $user->set_last_active_at();
         $user->save();
     }
@@ -37,3 +37,10 @@ echo "<a href='room/list.php?game=checkers'>Warcaby</a><br/>";
 echo "<a href='room/list.php?game=uno'>UNO</a><br/>";
 
 html_end();
+?>
+
+<script>
+    $("#logout").on("click", function() {
+        ajax("/endpoints/user/logout.php", null, null, null, false);
+    });
+</script>

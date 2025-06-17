@@ -11,6 +11,7 @@ POST parameters:
 Status codes:
 - 200 - join successful
 - 400 - incorrect data
+- 401 - no password given, but room has a password
 - 403 - incorrect password
 - 404 - room not found
 - 409 - room already full
@@ -29,6 +30,11 @@ if (empty($_POST["id"])) {
 $room = Room::get($_POST["id"]);
 if (!$room) {
     http_response_code(404);
+    return;
+}
+
+if ($room->has_password() && empty($_POST["password"])) {
+    http_response_code(401);
     return;
 }
 

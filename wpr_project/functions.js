@@ -33,13 +33,16 @@ function xhrError(response, messages) {
 }
 
 // Sends a POST request to the provided endpoint.
-function ajax(url, data, onSuccess, onError) {
+// async needs to be turned off when using with `$(window).on("beforeunload")` to make it work on Firefox.
+// See here: https://stackoverflow.com/questions/22776544/why-is-jquery-onbeforeunload-not-working-in-chrome-and-firefox
+function ajax(url, data, onSuccess, onError, async = true) {
     $.ajax({
         type: "POST",
         url: FS_PREFIX + url,
         data: data,
         success: onSuccess,
-        error: onError
+        error: onError,
+        async: async
     });
 }
 

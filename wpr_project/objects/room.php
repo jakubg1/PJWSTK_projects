@@ -39,6 +39,10 @@ class Room {
         $this->game_id = $game->get_id();
     }
 
+    public function has_password() {
+        return $this->password != null;
+    }
+
     public function check_password($password) {
         if ($this->password == null)
             return true;
