@@ -117,33 +117,6 @@ class Room {
         return count($this->players) >= $this->get_max_players();
     }
 
-    // Loads the room from given database row
-    private static function load($row) {
-        if (!$row) {
-            return null;
-        }
-        $room = new Room();
-        $room->id = $row["id"];
-        $room->name = $row["name"];
-        $room->owner = $row["owner"];
-        $room->game_id = $row["game_id"];
-        $room->password = $row["password"];
-        $room->players = $row["players"];
-        return $room;
-    }
-
-    // Packs the room data for ease of use in database functions
-    public function pack() {
-        return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "owner" => $this->owner,
-            "game_id" => $this->game_id,
-            "password" => $this->password,
-            "players" => $this->players
-        ];
-    }
-
     // Creates a new room.
     // The room automatically starts with its owner added as a player!
     public static function create($name, $owner) {
@@ -207,5 +180,32 @@ class Room {
         db_remove("DELETE FROM rooms WHERE id = ?", [$this->id]);
         db_remove("DELETE FROM room_players WHERE room_id = ?", [$this->id]);
         $this->id = null;
+    }
+
+    // Loads the room from given database row
+    private static function load($row) {
+        if (!$row) {
+            return null;
+        }
+        $room = new Room();
+        $room->id = $row["id"];
+        $room->name = $row["name"];
+        $room->owner = $row["owner"];
+        $room->game_id = $row["game_id"];
+        $room->password = $row["password"];
+        $room->players = $row["players"];
+        return $room;
+    }
+
+    // Packs the room data for ease of use in database functions
+    public function pack() {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "owner" => $this->owner,
+            "game_id" => $this->game_id,
+            "password" => $this->password,
+            "players" => $this->players
+        ];
     }
 }

@@ -11,6 +11,8 @@ Status codes:
 - 404 - user was not in any room
 */
 
+http_response_code(500);
+
 include "../../functions.php";
 
 session_start();
@@ -26,3 +28,5 @@ $room->remove_player($user);
 $room->save();
 
 unset($_SESSION["room_id"]);
+
+http_response_code(200);

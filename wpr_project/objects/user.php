@@ -51,33 +51,6 @@ class User {
         $this->last_active_at = get_timestamp();
     }
 
-    // Loads the user from given database row
-    private static function load($row) {
-        if (!$row) {
-            return null;
-        }
-        $user = new User();
-        $user->id = $row["id"];
-        $user->name = $row["name"];
-        $user->type = $row["type"];
-        $user->password = $row["password"];
-        $user->created_at = $row["created_at"];
-        $user->last_active_at = $row["last_active_at"];
-        return $user;
-    }
-
-    // Packs the user data for ease of use in database functions
-    public function pack() {
-        return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "type" => $this->type,
-            "password" => $this->password,
-            "created_at" => $this->created_at,
-            "last_active_at" => $this->last_active_at
-        ];
-    }
-
     // Creates a new user
     public static function create($name, $password) {
         $user = new User();
@@ -105,5 +78,32 @@ class User {
     // Saves the user to database
     public function save() {
         return db_save_object($this, "users", ["id", "name", "type", "password", "created_at", "last_active_at"]);
+    }
+
+    // Loads the user from given database row
+    private static function load($row) {
+        if (!$row) {
+            return null;
+        }
+        $user = new User();
+        $user->id = $row["id"];
+        $user->name = $row["name"];
+        $user->type = $row["type"];
+        $user->password = $row["password"];
+        $user->created_at = $row["created_at"];
+        $user->last_active_at = $row["last_active_at"];
+        return $user;
+    }
+
+    // Packs the user data for ease of use in database functions
+    public function pack() {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "type" => $this->type,
+            "password" => $this->password,
+            "created_at" => $this->created_at,
+            "last_active_at" => $this->last_active_at
+        ];
     }
 }

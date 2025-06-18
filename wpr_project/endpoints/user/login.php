@@ -13,6 +13,8 @@ Status codes:
 - 404 - user does not exist
 */
 
+http_response_code(500);
+
 include "../../functions.php";
 
 session_start();
@@ -35,3 +37,5 @@ if (!$success) {
 }
 
 $_SESSION["user_id"] = $user->get_id();
+
+http_response_code(200);

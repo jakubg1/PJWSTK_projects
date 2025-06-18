@@ -9,9 +9,15 @@ body {
 
     align-content: center;
     text-align: center;
-    /*font-size: 150%;*/
-    /*font-weight: bold;*/
     overflow-y: auto;
+}
+
+#content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
 }
 
 #main #line {
@@ -21,6 +27,8 @@ body {
     margin-left: 25%;
     margin-right: 25%;
 }
+
+/* Formularz */
 
 form {
     background-color: #ddd8;
@@ -46,17 +54,19 @@ form input {
     display: block;
     width: 50%;
     margin: auto;
+    margin-bottom: 3px;
     padding-top: 3px;
     padding-bottom: 3px;
     font-size: 100%;
 }
 
 form input[type="submit"] {
-    background-color: #7c9;
+    background-color: #3c6;
     border: 1px solid #cf8;
     border-right: 1px solid #271;
     border-bottom: 1px solid #271;
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 0px;
 }
 
 form input[type="submit"]:active {

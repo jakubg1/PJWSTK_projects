@@ -37,6 +37,25 @@ class Game {
         $this->finished_at = get_timestamp();
     }
 
+    // Creates a new game
+    public static function create($game_type) {
+        $game = new Game();
+        $game->id = null;
+        $game->game_type = $game_type;
+        return $game;
+    }
+
+    // Retrieves a game by ID
+    public static function get($id) {
+        $row = db_select_one("SELECT * FROM games WHERE id = ?", [$id]);
+        return Game::load($row);
+    }
+
+    // Saves the game to database
+    public function save() {
+        return db_save_object($this, "games", ["id", "game_type", "started_at", "finished_at"]);
+    }
+
     // Loads the game from given database row
     private static function load($row) {
         if (!$row) {
@@ -58,24 +77,5 @@ class Game {
             "started_at" => $this->started_at,
             "finished_at" => $this->finished_at
         ];
-    }
-
-    // Creates a new game
-    public static function create($game_type) {
-        $game = new Game();
-        $game->id = null;
-        $game->game_type = $game_type;
-        return $game;
-    }
-
-    // Retrieves a game by ID
-    public static function get($id) {
-        $row = db_select_one("SELECT * FROM games WHERE id = ?", [$id]);
-        return Game::load($row);
-    }
-
-    // Saves the game to database
-    public function save() {
-        return db_save_object($this, "games", ["id", "game_type", "started_at", "finished_at"]);
     }
 }

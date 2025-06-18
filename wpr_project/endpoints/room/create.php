@@ -17,6 +17,8 @@ Status codes:
 - 403 - user not logged in
 */
 
+http_response_code(500);
+
 include "../../functions.php";
 
 session_start();
@@ -52,3 +54,5 @@ $room->set_game($game);
 $room->save();
 
 $_SESSION["room_id"] = $room->get_id();
+
+http_response_code(200);

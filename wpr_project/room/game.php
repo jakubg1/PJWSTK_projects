@@ -12,10 +12,6 @@ echo "<a id='leave' href='list.php?game=" . $room->get_game()->get_game_type() .
 echo "<br/>";
 echo "<div id='rooms'>";
 echo "<div id='chat_messages'>";
-echo "<div class='message'>test</div>";
-echo "<div class='message'>test2</div>";
-echo "<div class='message'>test3</div>";
-echo "<div class='message'>test4</div>";
 echo "</div>";
 echo "<form id='chat' action='/endpoints/room/message.php' method='POST'>";
 echo "<label for='message'>Wiadomość:</label>";
@@ -28,6 +24,9 @@ html_end();
 ?>
 
 <script>
+    // TODO: Maybe a better way to store/fetch the game type?
+    let gameType = "<?php echo $room->get_game()->get_game_type(); ?>";
+
     // Whenever we leave this page, the server should know that we left the room.
     $("#leave").on("click", function() {
         ajax("/endpoints/room/leave.php", null, null, null, false);
@@ -37,7 +36,27 @@ html_end();
     setInterval(heartbeat, 1000);
 
     function heartbeat() {
-        ajax("/endpoints/room/heartbeat.php");
+        // Send a heartbeat and throw the player away if something is wrong.
+        ajax(
+            "/endpoints/room/heartbeat.php",
+            null,
+            null,
+            function(response) {
+                redirect("/room/list.php?disconnected=1");
+            }
+        );
+        // Retrieve any messages.
+        ajax(
+            "/endpoints/room/get_events.php",
+            null,
+            function(response) {
+                data = JSON.parse(response);
+                for (let i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                }
+            },
+            null
+        )
     }
 
     // Handle chat messages.

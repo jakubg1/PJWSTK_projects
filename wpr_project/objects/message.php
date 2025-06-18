@@ -42,6 +42,28 @@ class Message {
         return $this->sent_at;
     }
 
+    // Creates a new message
+    public static function create($game, $user, $message) {
+        $msg = new Message();
+        $msg->id = null;
+        $msg->game_id = $game->get_id();
+        $msg->user_id = $user->get_id();
+        $msg->message = $message;
+        $msg->sent_at = get_timestamp();
+        return $msg;
+    }
+
+    // Retrieves a message by ID
+    public static function get($id) {
+        $row = db_select_one("SELECT * FROM messages WHERE id = ?", [$id]);
+        return Message::load($row);
+    }
+
+    // Saves the message to database
+    public function save() {
+        return db_save_object($this, "messages", ["id", "game_id", "user_id", "message", "sent_at"]);
+    }
+
     // Loads the message from given database row
     private static function load($row) {
         if (!$row) {
@@ -65,27 +87,5 @@ class Message {
             "message" => $this->message,
             "sent_at" => $this->sent_at,
         ];
-    }
-
-    // Creates a new message
-    public static function create($game, $user, $message) {
-        $msg = new Message();
-        $msg->id = null;
-        $msg->game_id = $game->get_id();
-        $msg->user_id = $user->get_id();
-        $msg->message = $message;
-        $msg->sent_at = get_timestamp();
-        return $msg;
-    }
-
-    // Retrieves a message by ID
-    public static function get($id) {
-        $row = db_select_one("SELECT * FROM messages WHERE id = ?", [$id]);
-        return Message::load($row);
-    }
-
-    // Saves the message to database
-    public function save() {
-        return db_save_object($this, "messages", ["id", "game_id", "user_id", "message", "sent_at"]);
     }
 }

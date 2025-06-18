@@ -13,6 +13,8 @@ Status codes:
 - 500 - database error
 */
 
+http_response_code(500);
+
 include "../../functions.php";
 
 if (empty($_POST["user"]) || empty($_POST["password"])) {
@@ -31,3 +33,5 @@ if (!$result) {
     http_response_code(500);
     return;
 }
+
+http_response_code(200);

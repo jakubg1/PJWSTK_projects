@@ -32,6 +32,20 @@ function xhrError(response, messages) {
     return "Wystąpił BŁĄD NIESPODZIANKA! To się nigdy nie powinno zdarzyć! (" + response.status + ")";
 }
 
+// Wraps an error function which catches the response body and prints it. `onError` is optional.
+function wrapError(onError) {
+    return function(response) {
+        if (onError != null)
+            onError(response);
+        // Print error info to console if something has been returned
+        // (so that when an error shows up, I can just place var_dumps for quick debugging)
+        if (response.responseText != null && response.responseText.length > 0) {
+            console.log("Error info:");
+            console.log(response.responseText);
+        }
+    }
+}
+
 // Sends a POST request to the provided endpoint.
 // async needs to be turned off when using with `$(window).on("beforeunload")` to make it work on Firefox.
 // See here: https://stackoverflow.com/questions/22776544/why-is-jquery-onbeforeunload-not-working-in-chrome-and-firefox
@@ -41,7 +55,7 @@ function ajax(url, data, onSuccess, onError, async = true) {
         url: FS_PREFIX + url,
         data: data,
         success: onSuccess,
-        error: onError,
+        error: wrapError(onError),
         async: async
     });
 }
@@ -63,15 +77,7 @@ function registerForm(id, onValidate, onSuccess, onError) {
                 contentType: false,
                 processData: false,
                 success: onSuccess,
-                error: function(response) {
-                    onError(response);
-                    // Print error info to console if something has been returned
-                    // (so that when an error shows up, I can just place var_dumps for quick debugging)
-                    if (response.responseText.length > 0) {
-                        console.log("Error info:");
-                        console.log(response.responseText);
-                    }
-                }
+                error: wrapError(onError)
             });
         }
     });

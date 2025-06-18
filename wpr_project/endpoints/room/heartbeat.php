@@ -11,6 +11,8 @@ Status codes:
 - 404 - user is not in any room
 */
 
+http_response_code(500);
+
 include "../../functions.php";
 
 session_start();
@@ -24,3 +26,5 @@ if (!$room) {
 
 $room->update_player_heartbeat($user);
 $room->save();
+
+http_response_code(200);

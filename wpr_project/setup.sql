@@ -76,6 +76,21 @@ CREATE TABLE game_states (
     value VARBINARY(256)
 );
 
+-- Lista eventów czekających na wysłanie do graczy
+-- Gracz odbiera eventy przez endpoint `endpoints/room/get_events.php`.
+-- Odebranie eventów powoduje ich skasowanie z bazy.
+-- Jeżeli gracz opuści grę (pokój), kolejka dla niego jest czyszczona.
+-- `payload` jest serializowane wbudowaną funkcją PHP, gdyż wartości mogą bardzo mocno się różnić!
+-- Typy eventów:
+-- - "message" - Nowa wiadomość wysłana na czacie
+--   - id: ID wiadomości do odczytania i przekazania graczowi
+CREATE TABLE queued_events (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
+    type VARCHAR(16) NOT NULL,
+    payload VARCHAR(256)
+);
+
 -- Lista wiadomości wysłanych w grach
 -- user: null jeżeli wiadomość systemowa
 CREATE TABLE messages (

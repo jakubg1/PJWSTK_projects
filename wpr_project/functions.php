@@ -4,10 +4,11 @@ $FS_PREFIX = "/git/PJWSTK_projects/wpr_project";
 
 // Include everything here. This way we only need to include functions.php on any other page!
 include "database.php";
-include "objects/game.php";
-include "objects/message.php";
-include "objects/room.php";
-include "objects/user.php";
+include "objects/Game.php";
+include "objects/Message.php";
+include "objects/QueuedEvent.php";
+include "objects/Room.php";
+include "objects/User.php";
 include "tick.php";
 
 function html_start($title = "Stuff is cooking here") {
@@ -22,9 +23,11 @@ function html_start($title = "Stuff is cooking here") {
     echo "</head>";
     echo "<body>";
     echo "<div id='main'>";
+    echo "<div id='content'>";
 }
 
 function html_end() {
+    echo "</div>";
     echo "</div>";
     echo "</body>";
     echo "</html>";

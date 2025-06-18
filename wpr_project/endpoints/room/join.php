@@ -11,11 +11,12 @@ POST parameters:
 Status codes:
 - 200 - join successful
 - 400 - incorrect data
-- 401 - no password given, but room has a password
-- 403 - incorrect password
+- 401 - incorrect password
+- 403 - room already full
 - 404 - room not found
-- 409 - room already full
 */
+
+http_response_code(500);
 
 include "../../functions.php";
 
@@ -33,19 +34,14 @@ if (!$room) {
     return;
 }
 
-if ($room->has_password() && empty($_POST["password"])) {
+$password = $_POST["password"] ?? "";
+if (!$room->check_password($password)) {
     http_response_code(401);
     return;
 }
 
-$password = $_POST["password"] ?? "";
-if (!$room->check_password($password)) {
-    http_response_code(403);
-    return;
-}
-
 if ($room->is_full()) {
-    http_response_code(409);
+    http_response_code(403);
     return;
 }
 
@@ -62,3 +58,5 @@ $room->add_player($user);
 $room->save();
 
 $_SESSION["room_id"] = $room->get_id();
+
+http_response_code(200);

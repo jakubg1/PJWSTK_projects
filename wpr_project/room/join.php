@@ -35,9 +35,8 @@ html_end();
                 showForm();
             } else {
                 let errors = {
-                    403: "Nieprawidłowe hasło!",
-                    404: "Nie znaleziono pokoju!",
-                    409: "Ten pokój jest pełny!"
+                    403: "Ten pokój jest pełny!",
+                    404: "Nie znaleziono pokoju!"
                 };
                 status(xhrError(response, errors));
                 $("h1").text("Nie udało się dołączyć do pokoju!");
@@ -59,9 +58,9 @@ html_end();
             },
             function(response) {
                 let errors = {
-                    403: "Nieprawidłowe hasło!",
-                    404: "Nie znaleziono pokoju!",
-                    409: "Ten pokój jest pełny!"
+                    401: "Nieprawidłowe hasło!",
+                    403: "Ten pokój jest pełny!",
+                    404: "Nie znaleziono pokoju!"
                 };
                 status(xhrError(response, errors));
             }

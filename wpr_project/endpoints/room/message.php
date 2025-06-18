@@ -14,6 +14,8 @@ Status codes:
 - 404 - user is not in any room
 */
 
+http_response_code(500);
+
 include "../../functions.php";
 
 session_start();
@@ -42,3 +44,15 @@ if (!$result) {
     http_response_code(500);
     return;
 }
+
+// Send an event to every other player in the room
+foreach ($room->get_players() as $player) {
+    echo $player->get_id();
+    if ($player->get_id() != $user->get_id()) {
+        $event = QueuedEvent::create($player, "message");
+        $event->set_payload(["id" => $message->get_id()]);
+        $event->save();
+    }
+}
+
+http_response_code(200);

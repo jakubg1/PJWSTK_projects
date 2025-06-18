@@ -13,6 +13,10 @@ if (!is_game_type_supported($game)) {
     $game = "";
 }
 
+if (isset($_GET["disconnected"])) {
+    echo "Zostałeś rozłączony z pokoju.<br/>";
+}
+
 if ($game != "") {
     echo "Wybrana gra: " . translate_game_type($game) . "<br/>";
     if (is_user_logged_in()) {
