@@ -13,5 +13,10 @@ if (!$contents || intval($contents) < time()) {
 // - Deletes guest accounts which have not seen any activity for more than 24 hours.
 // - Checks if any player in the game has timed out.
 function tick() {
-    
+    // Detect player timeouts.
+    $rooms = Room::get_list();
+    foreach ($rooms as $room) {
+        $room->remove_dead_players();
+        $room->save();
+    }
 }

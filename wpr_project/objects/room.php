@@ -77,15 +77,29 @@ class Room {
 
     // Removes the provided player from the room.
     public function remove_player($player) {
-        unset($this->players[$player->get_id()]);
+        $this->remove_player_by_id($player->get_id());
+    }
+
+    // Removes the provided player from the room by their ID.
+    public function remove_player_by_id($player_id) {
+        unset($this->players[$player_id]);
         if (count($this->players) == 0) {
             return;
         }
         // If the provided player is the room's owner, a new owner is randomly assigned.
-        if ($this->owner == $player->get_id()) {
+        if ($this->owner == $player_id) {
             foreach ($this->players as $id => $data) {
                 $this->owner = $id;
                 break;
+            }
+        }
+    }
+
+    // Removes players who haven't sent the heartbeat for 15 seconds.
+    public function remove_dead_players() {
+        foreach ($this->players as $id => $data) {
+            if (time() > strtotime($data["last_heartbeat_at"]) + 15) {
+                $this->remove_player_by_id($id);
             }
         }
     }
@@ -151,6 +165,16 @@ class Room {
             $row["players"][$player_row["user_id"]] = ["last_heartbeat_at" => $player_row["last_heartbeat_at"]];
         }
         return Room::load($row);
+    }
+
+    // Retrieves a list of all rooms.
+    public static function get_list() {
+        $rows = db_select("SELECT rooms.* FROM rooms JOIN games ON rooms.game_id = games.id");
+        $rooms = [];
+        foreach ($rows as $row) {
+            $rooms[] = Room::get($row["id"]);
+        }
+        return $rooms;
     }
 
     // Retrieves a list of rooms by game type ("checkers" or "uno")

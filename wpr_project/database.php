@@ -10,27 +10,27 @@ function db_connect() {
     return new PDO($dsn, $USER, $PASS, [PDO::ATTR_PERSISTENT => true]);
 }
 
-function db_select_one($sql, $params) {
+function db_select_one($sql, $params = []) {
     $dbc = db_connect();
     $sth = $dbc->prepare($sql);
     $sth->execute($params);
     return $sth->fetch(PDO::FETCH_ASSOC);
 }
 
-function db_select($sql, $params) {
+function db_select($sql, $params = []) {
     $dbc = db_connect();
     $sth = $dbc->prepare($sql);
     $sth->execute($params);
     return $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function db_update($sql, $params) {
+function db_update($sql, $params = []) {
     $dbc = db_connect();
     $sth = $dbc->prepare($sql);
     return $sth->execute($params);
 }
 
-function db_insert($sql, $params) {
+function db_insert($sql, $params = []) {
     $dbc = db_connect();
     $sth = $dbc->prepare($sql);
     try {
@@ -44,7 +44,7 @@ function db_insert($sql, $params) {
     }
 }
 
-function db_remove($sql, $params) {
+function db_remove($sql, $params = []) {
     $dbc = db_connect();
     $sth = $dbc->prepare($sql);
     return $sth->execute($params);

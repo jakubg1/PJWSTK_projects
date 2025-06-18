@@ -52,7 +52,7 @@ form input {
 }
 
 form input[type="submit"] {
-    background-color: #4b3;
+    background-color: #7c9;
     border: 1px solid #cf8;
     border-right: 1px solid #271;
     border-bottom: 1px solid #271;
@@ -60,10 +60,34 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:active {
-    background-color: #4b3;
     border: 1px solid #271;
     border-right: 1px solid #cf8;
     border-bottom: 1px solid #cf8;
+}
+
+/* Czat */
+
+form#chat {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    padding: 0px;
+}
+
+form#chat label {
+    width: auto;
+    margin: auto;
+    margin-left: 5px;
+}
+
+form#chat input {
+    flex-grow: 1;
+    margin: 5px;
+}
+
+form#chat input[type="submit"] {
+    width: auto;
+    margin: 5px;
 }
 
 #rooms {
