@@ -36,4 +36,9 @@ if (!$room) {
 }
 
 $message = Message::create($room->get_game(), $user, $_POST["message"]);
-$message->save();
+$result = $message->save();
+
+if (!$result) {
+    http_response_code(500);
+    return;
+}

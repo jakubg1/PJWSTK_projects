@@ -47,13 +47,13 @@ class Message {
         if (!$row) {
             return null;
         }
-        $message = new Message();
-        $message->id = $row["id"];
-        $message->game_id = $row["game_id"];
-        $message->user_id = $row["user_id"];
-        $message->message = $row["message"];
-        $message->sent_at = $row["sent_at"];
-        return $message;
+        $msg = new Message();
+        $msg->id = $row["id"];
+        $msg->game_id = $row["game_id"];
+        $msg->user_id = $row["user_id"];
+        $msg->message = $row["message"];
+        $msg->sent_at = $row["sent_at"];
+        return $msg;
     }
 
     // Packs the message data for ease of use in database functions
@@ -69,13 +69,13 @@ class Message {
 
     // Creates a new message
     public static function create($game, $user, $message) {
-        $message = new Message();
-        $message->id = null;
-        $message->game_id = $game->get_id();
-        $message->user_id = $user->get_id();
-        $message->message = $message;
-        $message->sent_at = get_timestamp();
-        return $message;
+        $msg = new Message();
+        $msg->id = null;
+        $msg->game_id = $game->get_id();
+        $msg->user_id = $user->get_id();
+        $msg->message = $message;
+        $msg->sent_at = get_timestamp();
+        return $msg;
     }
 
     // Retrieves a message by ID

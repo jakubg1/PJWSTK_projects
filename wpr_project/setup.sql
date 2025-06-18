@@ -1,7 +1,7 @@
 -- This is a file you need to run on your database ONCE in order for the server to not throw up any errors and make everything work.
 -- WARNING!!! DO NOT RUN THIS SCRIPT ON A RUNNING INSTANCE!!! YOU WILL DESTROY ALL DATA!!!
 
-DROP DATABASE gameserver;
+DROP DATABASE IF EXISTS gameserver;
 CREATE DATABASE gameserver;
 USE gameserver;
 
@@ -12,15 +12,15 @@ CREATE TABLE users (
     name VARCHAR(32) UNIQUE NOT NULL,
     type ENUM('user', 'admin', 'guest') NOT NULL,
     password VARCHAR(256),
-    created_at TIMESTAMP,
-    last_active_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    last_active_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );
 
 -- Lista banów nałożonych na użytkowników
 CREATE TABLE bans (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     user_id INTEGER NOT NULL,
-    given_at TIMESTAMP,
+    given_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     expires_at TIMESTAMP NULL DEFAULT NULL,
     reason VARCHAR(256)
 );
@@ -42,7 +42,7 @@ CREATE TABLE rooms (
 CREATE TABLE room_players (
     room_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    last_heartbeat_at TIMESTAMP
+    last_heartbeat_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );
 
 -- Lista rozegranych gier
@@ -83,5 +83,5 @@ CREATE TABLE messages (
     game_id INTEGER NOT NULL,
     user_id INTEGER,
     message VARCHAR(256),
-    sent_at TIMESTAMP
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );

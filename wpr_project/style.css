@@ -11,7 +11,7 @@ body {
     text-align: center;
     /*font-size: 150%;*/
     /*font-weight: bold;*/
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #main #line {

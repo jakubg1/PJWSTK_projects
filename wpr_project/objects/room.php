@@ -159,6 +159,9 @@ class Room {
     // Retrieves a room by ID
     public static function get($id) {
         $row = db_select_one("SELECT * FROM rooms WHERE id = ?", [$id]);
+        if (!$row) {
+            return null;
+        }
         $row["players"] = [];
         $player_rows = db_select("SELECT * FROM room_players WHERE room_id = ?", [$id]);
         foreach ($player_rows as $player_row) {
