@@ -40,7 +40,9 @@ html_end();
         ajax(
             "/endpoints/room/heartbeat.php",
             null,
-            null,
+            function(response) {
+                //console.log(response);
+            },
             function(response) {
                 redirect("/room/list.php?disconnected=1");
             }
@@ -50,13 +52,23 @@ html_end();
             "/endpoints/room/get_events.php",
             null,
             function(response) {
-                data = JSON.parse(response);
+                try {
+                    data = JSON.parse(response);
+                } catch (e) {
+                    ;
+                }
                 for (let i = 0; i < data.length; i++) {
-                    console.log(data[i]);
+                    handleEvent(data[i]);
                 }
             },
             null
         )
+    }
+
+    function handleEvent(event) {
+        if (event.type == "message") {
+            chatMessage(event.message.message);
+        }
     }
 
     // Handle chat messages.

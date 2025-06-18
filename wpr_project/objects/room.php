@@ -83,7 +83,7 @@ class Room {
     // Removes the provided player from the room by their ID.
     public function remove_player_by_id($player_id) {
         unset($this->players[$player_id]);
-        if (count($this->players) == 0) {
+        if ($this->get_player_count() == 0) {
             return;
         }
         // If the provided player is the room's owner, a new owner is randomly assigned.
@@ -109,12 +109,19 @@ class Room {
         $this->players[$player->get_id()]["last_heartbeat_at"] = get_timestamp();
     }
 
+    // Returns the number of players in the room.
+    public function get_player_count() {
+        return count($this->players);
+    }
+
+    // Returns the maximum number of players in the room.
     public function get_max_players() {
         return get_max_players($this->get_game()->get_game_type());
     }
 
+    // Returns whether the room is full.
     public function is_full() {
-        return count($this->players) >= $this->get_max_players();
+        return $this->get_player_count() >= $this->get_max_players();
     }
 
     // Creates a new room.
@@ -165,7 +172,7 @@ class Room {
 
     // Saves the room to database, or deletes it, if it's empty.
     public function save() {
-        if (count($this->players) > 0) {
+        if ($this->get_player_count() > 0) {
             $arrays = [
                 "players" => ["table" => "room_players", "field" => "room_id", "subfield" => "user_id", "subfields" => ["last_heartbeat_at"]]
             ];
@@ -177,8 +184,8 @@ class Room {
 
     // Removes the room from database, as well as any relevant player entries.
     public function delete() {
-        db_remove("DELETE FROM rooms WHERE id = ?", [$this->id]);
-        db_remove("DELETE FROM room_players WHERE room_id = ?", [$this->id]);
+        db_remove("rooms", ["id" => $this->id]);
+        db_remove("room_players", ["id" => $this->id]);
         $this->id = null;
     }
 

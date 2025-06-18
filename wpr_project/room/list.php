@@ -30,7 +30,7 @@ if ($game != "") {
     if (sizeof($rooms) > 0) {
         foreach ($rooms as $room) {
             $players = $room->get_players();
-            echo $room->get_name() . " (" . count($players) . "/" . $room->get_max_players() . ") (";
+            echo $room->get_name() . " (" . $room->get_player_count() . "/" . $room->get_max_players() . ") (";
             for ($i = 0; $i < sizeof($players); $i++) {
                 if ($i > 0)
                     echo ", ";

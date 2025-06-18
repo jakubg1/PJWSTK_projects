@@ -69,7 +69,7 @@ class QueuedEvent {
 
     // Removes the event from database.
     public function delete() {
-        db_remove("DELETE FROM queued_events WHERE id = ?", [$this->id]);
+        db_remove("queued_events", ["id" => $this->id]);
         $this->id = null;
     }
 
