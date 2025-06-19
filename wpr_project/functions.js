@@ -35,6 +35,9 @@ function xhrError(response, messages) {
 // Wraps an error function which catches the response body and prints it. `onError` is optional.
 function wrapError(onError) {
     return function(response) {
+        // Ignore NS_BINDING_ABORTED which could show up after a forced refresh.
+        if (response.status == 0)
+            return;
         if (onError != null)
             onError(response);
         // Print error info to console if something has been returned
@@ -69,7 +72,7 @@ function ajax(url, data, onSuccess, onError, async = true) {
     });
 }
 
-// Binds a form and sends a POST request to the provided endpoint.
+// Binds a form and sends a POST request to the provided endpoint when the form is submitted.
 function registerForm(id, onValidate, onSuccess, onError) {
     // https://stackoverflow.com/questions/61259511/php-submit-form-without-exit-of-page
     let form = $("#" + id);
@@ -89,5 +92,14 @@ function registerForm(id, onValidate, onSuccess, onError) {
                 error: wrapError(onError)
             });
         }
+    });
+}
+
+// Binds a button and sends a POST request to the provided endpoint when the button is clicked.
+function registerButton(id, url, data, onSuccess, onError) {
+    // https://stackoverflow.com/questions/61259511/php-submit-form-without-exit-of-page
+    let btn = $("#" + id);
+    btn.on("click", function(e) {
+        ajax(url, data, onSuccess, onError);
     });
 }

@@ -46,6 +46,9 @@ function html_topbar() {
     if ($user) {
         echo "Zalogowany jako: " . $user->get_name();
         echo " | <a href='" . $FS_PREFIX . "/user/logout.php'>Wyloguj się</a>";
+        if (is_user_admin()) {
+            echo " | <a href='" . $FS_PREFIX . "/admin.php'>Panel administratora</a>";
+        }
     } else {
         echo "Nie jesteś zalogowany | <a href='" . $FS_PREFIX . "/user/login.php'>Zaloguj się</a>";
     }

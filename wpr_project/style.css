@@ -46,13 +46,19 @@ body {
     color: #8f8;
 }
 
-/* Formularze */
+/* Generyczny kontener (np. na przyciski) */
 
-form {
+form, .pane {
     background-color: #ddd8;
     border: 1px solid #fff;
     border-right: 1px solid #888;
     border-bottom: 1px solid #888;
+    padding: 5px;
+}
+
+/* Formularze */
+
+form {
     width: 30%;
     margin: auto;
     margin-top: 10px;
@@ -67,7 +73,7 @@ form label {
     text-align: left;
 }
 
-form input {
+input {
     font-family: inherit;
     display: block;
     width: 50%;
@@ -78,19 +84,38 @@ form input {
     font-size: 100%;
 }
 
-form input[type="submit"] {
+input[type="submit"] {
     background-image: linear-gradient(#3c6, #1a5);
     border: 1px solid #cf8;
     border-right: 1px solid #271;
     border-bottom: 1px solid #271;
-    margin-top: 15px;
     margin-bottom: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-form input[type="submit"]:active {
+input[type="submit"]:active {
     border: 1px solid #271;
     border-right: 1px solid #cf8;
     border-bottom: 1px solid #cf8;
+}
+
+input.red[type="submit"] {
+    background-image: linear-gradient(#f63, #c31);
+    border: 1px solid #fa8;
+    border-right: 1px solid #a31;
+    border-bottom: 1px solid #a31;
+    margin-bottom: 0px;
+}
+
+input.red[type="submit"]:active {
+    border: 1px solid #a31;
+    border-right: 1px solid #fa8;
+    border-bottom: 1px solid #fa8;
+}
+
+form input[type="submit"] {
+    margin-top: 15px;
 }
 
 /* Naglowek okienka */
@@ -116,19 +141,16 @@ form input[type="submit"]:active {
     padding: 10px;
 }
 
-/* Gra */
+/* Wrappery glownych elementow gry */
 
+/* -> #game, #game_under */
 #game_wrapper {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-#game {
-    flex-grow: 1;
-    background-color: #f0f;
-}
-
+/* -> #chat, #player_list */
 #game_under {
     display: flex;
     flex-direction: row;
@@ -136,8 +158,10 @@ form input[type="submit"]:active {
     height: 200px;
 }
 
-#players {
-    width: 400px;
+/* Gra */
+
+#game {
+    flex-grow: 1;
 }
 
 /* Czat */
@@ -177,25 +201,46 @@ form input[type="submit"]:active {
 form#chat_form {
     display: flex;
     flex-direction: row;
+    gap: 5px;
     width: auto;
     margin: 0px;
-    padding: 0px;
+    padding: 5px;
 }
 
 form#chat_form label {
     width: auto;
     margin: auto;
-    margin-left: 5px;
 }
 
 form#chat_form input {
     flex-grow: 1;
-    margin: 5px;
+    margin: 0px;
+}
+
+form#chat_form input[type="text"] {
+    padding: 0px;
 }
 
 form#chat_form input[type="submit"] {
+    flex-grow: 0;
     width: auto;
-    margin: 5px;
+}
+
+/* Lista graczy */
+
+#player_list {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+#players {
+    flex-grow: 1;
+    background-color: #ddd8;
+    border: 1px solid #888;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    overflow-y: auto;
 }
 
 /* Status box */

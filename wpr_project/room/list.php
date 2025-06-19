@@ -9,12 +9,12 @@ if (isset($_GET["game"])) {
 }
 
 if (!is_game_type_supported($game)) {
-    echo "Błąd - nieprawidłowa gra!<br/>";
+    echo "<div id='message' class='failure'>Błąd - nieprawidłowa gra!</div>";
     $game = "";
 }
 
 if (isset($_GET["disconnected"])) {
-    echo "Zostałeś rozłączony z pokoju.<br/>";
+    echo "<div id='message' class='failure'>Zostałeś rozłączony z pokoju.</div>";
 }
 
 if ($game != "") {
