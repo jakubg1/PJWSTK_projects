@@ -48,7 +48,13 @@ html_end(true);
 
 <script>
     // TODO: Maybe a better way to store/fetch the game type?
-    let gameType = "<?php echo $room->get_game()->get_game_type(); ?>";
+    <?php
+        if ($room) {
+            echo "let gameType = '" . $room->get_game() ->get_game_type() . "';";
+        } else {
+            echo "let gameType = null;";
+        }
+    ?>
 
     // Whenever we leave this page, the server should know that we left the room.
     $("#leave").on("click", function() {
@@ -162,6 +168,9 @@ html_end(true);
         null,
         function(response) {
             redirect("/room/list.php?game=" + gameType);
+        },
+        function(response) {
+            redirect("/index.php");
         }
     );
 </script>

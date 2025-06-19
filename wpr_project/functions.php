@@ -13,6 +13,7 @@ include "tick.php";
 
 function html_start($title = "Stuff is cooking here", $uncentered = false) {
     global $FS_PREFIX;
+    echo "<!DOCTYPE html>";
     echo "<html>";
     echo "<head>";
     echo "<title>" . $title . "</title>";

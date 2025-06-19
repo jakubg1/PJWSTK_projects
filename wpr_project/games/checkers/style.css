@@ -1,35 +1,125 @@
+body {
+    overflow: hidden;
+}
+
 /* Board */
 
 #board {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto;
     width: 100vh;
     height: 100vh;
     margin: auto;
     aspect-ratio: 1 / 1;
 }
 
-/* https://stackoverflow.com/questions/23362157/how-to-make-a-css-triangle-background-on-a-div-without-using-border-and-image */
-#board .white {
-    background-image: linear-gradient(to bottom right, #fff 0%, #fff 50%, #888 50%, #888 100%);
+/* Tiles */
+
+#tiles {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    width: 100%;
+    height: 100%;
 }
 
-#board .white .inner {
-    background-color: #ddd;
-}
-
-#board .black {
-    background-image: linear-gradient(to bottom right, #666 0%, #666 50%, #000 50%, #000 100%);
-}
-
-#board .black .inner {
-    background-color: #222;
-}
-
-#board .inner {
+.tile .inner {
     position: relative;
     top: 4%;
     left: 4%;
     width: 92%;
     height: 92%;
+}
+
+/* https://stackoverflow.com/questions/23362157/how-to-make-a-css-triangle-background-on-a-div-without-using-border-and-image */
+
+.tile.white {
+    background-image: linear-gradient(to bottom right, #fff 0%, #fff 50%, #888 50%, #888 100%);
+}
+
+.tile.white .inner {
+    background-color: #ddd;
+}
+
+.tile.black {
+    background-image: linear-gradient(to bottom right, #666 0%, #666 50%, #000 50%, #000 100%);
+}
+
+.tile.black .inner {
+    background-color: #222;
+}
+
+/* Pawns */
+#pawns {
+    position: absolute;
+    top: 0vh;
+}
+
+.pawn {
+    position: absolute;
+    width: 12.5vh;
+    height: 12.5vh;
+}
+
+.pawn .layer1, .pawn .layer2, .pawn .layer3, .pawn .layer4 {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+}
+
+.pawn .layer1 {
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+}
+
+.pawn .layer2 {
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+}
+
+.pawn .layer3 {
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+}
+
+.pawn .layer4 {
+    top: 35%;
+    left: 35%;
+    width: 30%;
+    height: 30%;
+}
+
+.pawn.white .layer1 {
+    background-image: linear-gradient(to bottom right, #ddd 0%, #ddd 10%, #999 90%, #999 100%);
+}
+
+.pawn.white .layer2 {
+    background-image: linear-gradient(to bottom right, #bbb 0%, #bbb 20%, #fff 80%, #fff 100%);
+}
+
+.pawn.white .layer3 {
+    background-image: linear-gradient(to bottom right, #fff 0%, #fff 10%, #bbb 90%, #bbb 100%);
+}
+
+.pawn.white .layer4 {
+    background-image: linear-gradient(to bottom right, #bbb 0%, #bbb 20%, #fff 80%, #fff 100%);
+}
+
+.pawn.black .layer1 {
+    background-image: linear-gradient(to bottom right, #111 0%, #111 10%, #000 90%, #000 100%);
+}
+
+.pawn.black .layer2 {
+    background-image: linear-gradient(to bottom right, #000 0%, #000 20%, #222 80%, #222 100%);
+}
+
+.pawn.black .layer3 {
+    background-image: linear-gradient(to bottom right, #222 0%, #222 10%, #000 90%, #000 100%);
+}
+
+.pawn.black .layer4 {
+    background-image: linear-gradient(to bottom right, #000 0%, #000 20%, #222 80%, #222 100%);
 }
