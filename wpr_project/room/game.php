@@ -4,18 +4,21 @@ session_start();
 html_start("Gra", true);
 
 // game_wrapper
-// - game
+// - game_box
 // - game_under
 //   - chat
 //   - player_list
 
 echo "<div id='game_wrapper'>";
-echo "<div id='game'>";
+echo "<div id='game_box'>";
 $room = Room::get($_SESSION["room_id"]);
 if ($room) {
-    echo "Jesteś w pokoju.<br/>";
-    echo "ID: " . $room->get_id() . "<br/>";
-    echo "Nazwa: " . $room->get_name() . "<br/>";
+    $game = $room->get_game()->get_game_type();
+    if ($game == "checkers") {
+        echo "<iframe id='game' src='../games/checkers/index.html'></iframe>";
+    } elseif ($game == "uno") {
+        echo "Uno jeszcze nie wspierane, ale witamy!";
+    }
 } else {
     echo "Nie jesteś w pokoju!";
 }
@@ -65,7 +68,8 @@ html_end(true);
                 //console.log(response);
             },
             function(response) {
-                redirect("/room/list.php?game=" + gameType + "&disconnected=1");
+                //redirect("/room/list.php?game=" + gameType + "&disconnected=1");
+                chatMessage("System wyrzucił cię z pokoju. Prawdopodobnie przez buga. Przeszukaj logi. Normalnie system wyrzuciłby cię do listy pokoi! Kliknij \"Opuść pokój\" i dołącz lub stwórz pokój ponownie.");
             }
         );
         // Retrieve any messages.

@@ -1,0 +1,35 @@
+/* Board */
+
+#board {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    width: 100vh;
+    height: 100vh;
+    margin: auto;
+    aspect-ratio: 1 / 1;
+}
+
+/* https://stackoverflow.com/questions/23362157/how-to-make-a-css-triangle-background-on-a-div-without-using-border-and-image */
+#board .white {
+    background-image: linear-gradient(to bottom right, #fff 0%, #fff 50%, #888 50%, #888 100%);
+}
+
+#board .white .inner {
+    background-color: #ddd;
+}
+
+#board .black {
+    background-image: linear-gradient(to bottom right, #666 0%, #666 50%, #000 50%, #000 100%);
+}
+
+#board .black .inner {
+    background-color: #222;
+}
+
+#board .inner {
+    position: relative;
+    top: 4%;
+    left: 4%;
+    width: 92%;
+    height: 92%;
+}
