@@ -29,4 +29,10 @@ $room->save();
 
 unset($_SESSION["room_id"]);
 
+// Send a notification to everyone in the room that we've left.
+$message = Message::create($room->get_game(), $user->get_name() . " opuścił grę.");
+$message->save();
+
+$room->send_message_events($message);
+
 http_response_code(200);

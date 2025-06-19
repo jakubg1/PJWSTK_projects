@@ -9,6 +9,11 @@ No POST parameters, session must be active!
 Status codes:
 - 200 - retrieval successful
 - 403 - user not logged in
+
+Returned data:
+- list of events, where each event is:
+    - {"type": "message", "message": <packed message data>, ["user": <packed user data>]}
+        - `user` field does not exist if it's a system message.
 */
 
 http_response_code(500);
@@ -31,7 +36,11 @@ foreach ($events as $event) {
     if ($event->get_type() == "message") {
         $payload = $event->get_payload();
         $message = Message::get($payload["id"]);
-        $result[] = ["type" => "message", "message" => $message->pack()];
+        $subresult = ["type" => "message", "message" => $message->pack()];
+        $sender = $message->get_user();
+        if ($sender)
+            $subresult["user"] = $sender->pack();
+        $result[] = $subresult;
     }
     $event->delete();
 }

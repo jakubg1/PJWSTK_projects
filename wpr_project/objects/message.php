@@ -43,11 +43,11 @@ class Message {
     }
 
     // Creates a new message
-    public static function create($game, $user, $message) {
+    public static function create($game, $message, $user = null) {
         $msg = new Message();
         $msg->id = null;
         $msg->game_id = $game->get_id();
-        $msg->user_id = $user->get_id();
+        $msg->user_id = $user ? $user->get_id() : null;
         $msg->message = $message;
         $msg->sent_at = get_timestamp();
         return $msg;

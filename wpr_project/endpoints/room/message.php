@@ -12,6 +12,9 @@ Status codes:
 - 400 - no message specified
 - 401 - user is not logged in
 - 404 - user is not in any room
+
+Returned data:
+- {"message": <packed message data>, "user": <packed user data>}
 */
 
 http_response_code(500);
@@ -37,7 +40,7 @@ if (!$room) {
     return;
 }
 
-$message = Message::create($room->get_game(), $user, $_POST["message"]);
+$message = Message::create($room->get_game(), $_POST["message"], $user);
 $result = $message->save();
 
 if (!$result) {
@@ -45,14 +48,12 @@ if (!$result) {
     return;
 }
 
-// Send an event to every other player in the room
-foreach ($room->get_players() as $player) {
-    echo $player->get_id();
-    if ($player->get_id() != $user->get_id()) {
-        $event = QueuedEvent::create($player, "message");
-        $event->set_payload(["id" => $message->get_id()]);
-        $event->save();
-    }
-}
+$room->send_message_events($message);
+
+// Return the message back to the user.
+// This is because they could have modified the message after pressing "Send" but before confirming the message has been sent.
+$result = ["message" => $message->pack(), "user" => $message->get_user()->pack()];
+
+echo json_encode($result);
 
 http_response_code(200);

@@ -100,6 +100,11 @@ class Room {
         foreach ($this->players as $id => $data) {
             if (time() > strtotime($data["last_heartbeat_at"]) + 15) {
                 $this->remove_player_by_id($id);
+                // Send a notification to everyone in the room that this player has timed out.
+                $user = User::get($id);
+                $message = Message::create($this->get_game(), $user->get_name() . " opuścił grę (timeout).");
+                $message->save();
+                $this->send_message_events($message);
             }
         }
     }
@@ -122,6 +127,17 @@ class Room {
     // Returns whether the room is full.
     public function is_full() {
         return $this->get_player_count() >= $this->get_max_players();
+    }
+
+    // Sends a message event to every other player in the room.
+    public function send_message_events($message) {
+        foreach ($this->get_players() as $player) {
+            if (!$message->get_user() || $player->get_id() != $message->get_user()->get_id()) {
+                $event = QueuedEvent::create($player, "message");
+                $event->set_payload(["id" => $message->get_id()]);
+                $event->save();
+            }
+        }
     }
 
     // Creates a new room.
@@ -185,7 +201,7 @@ class Room {
     // Removes the room from database, as well as any relevant player entries.
     public function delete() {
         db_remove("rooms", ["id" => $this->id]);
-        db_remove("room_players", ["id" => $this->id]);
+        db_remove("room_players", ["room_id" => $this->id]);
         $this->id = null;
     }
 

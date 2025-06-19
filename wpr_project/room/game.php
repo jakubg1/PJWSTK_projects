@@ -10,12 +10,13 @@ echo "ID: " . $room->get_id() . "<br/>";
 echo "Nazwa: " . $room->get_name() . "<br/>";
 echo "<a id='leave' href='list.php?game=" . $room->get_game()->get_game_type() . "'>Opuść pokój</a>";
 echo "<br/>";
-echo "<div id='rooms'>";
+echo "<div id='chat'>";
+echo "<div id='header'>Czat</div>";
 echo "<div id='chat_messages'>";
 echo "</div>";
-echo "<form id='chat' action='/endpoints/room/message.php' method='POST'>";
+echo "<form id='chat_form' action='/endpoints/room/message.php' method='POST'>";
 echo "<label for='message'>Wiadomość:</label>";
-echo "<input type='text' id='message' name='message' required='true'>";
+echo "<input type='text' id='message' name='message' required='true' maxlength='255'>";
 echo "<input type='submit' value='Wyślij'>";
 echo "</form>";
 echo "</div>";
@@ -52,11 +53,7 @@ html_end();
             "/endpoints/room/get_events.php",
             null,
             function(response) {
-                try {
-                    data = JSON.parse(response);
-                } catch (e) {
-                    ;
-                }
+                let data = tryJson(response);
                 for (let i = 0; i < data.length; i++) {
                     handleEvent(data[i]);
                 }
@@ -67,26 +64,40 @@ html_end();
 
     function handleEvent(event) {
         if (event.type == "message") {
-            chatMessage(event.message.message);
+            if (event.user) {
+                chatMessage(event.message.message, event.user.name);
+            } else {
+                chatMessage(event.message.message);
+            }
         }
     }
 
+    let chat = $("#chat_messages");
+    let chatbox = $("#chat_form input#message");
+
     // Handle chat messages.
-    function chatMessage(message) {
-        $("#chat_messages").append("<div class='message'>");
-        $("#chat_messages .message").last().text(message);
+    function chatMessage(message, sender) {
+        chat.append("<div class='message'>");
+        $msgbox = $("#chat_messages .message").last();
+        if (sender != null) {
+            $msgbox.text("<" + sender + "> " + message);
+        } else {
+            $msgbox.addClass("system");
+            $msgbox.text(message);
+        }
+        chat.scrollTop(chat[0].scrollHeight);
     }
 
     // Handle the chat form.
     registerForm(
-        "chat",
+        "chat_form",
         function(formData) {
+            chatbox.val("");
             return true;
         },
         function(response) {
-            let chatbox = $("#chat input#message");
-            chatMessage(chatbox.val());
-            chatbox.val("");
+            let data = tryJson(response);
+            chatMessage(data.message.message, data.user.name);
         },
         function(response) {
             let errors = {

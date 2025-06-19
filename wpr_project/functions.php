@@ -50,6 +50,7 @@ function html_status_box() {
 // - label - Input description, without the colon. Optional.
 // - value - Default value for the input. Optional.
 // - required - Whether the value must be provided in the form. Optional.
+// - max_length - Maximum input length, optional.
 function html_form($id, $action, $fields) {
     echo "<form id='" . $id . "' action='" . $action . "' method='POST'>";
     foreach ($fields as $field) {
@@ -66,6 +67,9 @@ function html_form($id, $action, $fields) {
         }
         if (isset($field["required"])) {
             $input .= " required='true'";
+        }
+        if (isset($field["max_length"])) {
+            $input .= " maxlength='" . $field["max_length"] . "'";
         }
         $input .= ">";
         echo $input;

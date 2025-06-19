@@ -61,7 +61,7 @@ form input {
 }
 
 form input[type="submit"] {
-    background-color: #3c6;
+    background-image: linear-gradient(#3c6, #1a5);
     border: 1px solid #cf8;
     border-right: 1px solid #271;
     border-bottom: 1px solid #271;
@@ -75,38 +75,79 @@ form input[type="submit"]:active {
     border-bottom: 1px solid #cf8;
 }
 
+/* Naglowek okienka */
+
+#header {
+    background-image: linear-gradient(#24c, #12f);
+    border: 1px solid #6af;
+    border-right: 1px solid #237;
+    border-bottom: 1px solid #237;
+    color: #fff;
+}
+
 /* Czat */
 
-form#chat {
-    display: flex;
-    flex-direction: row;
-    width: auto;
-    padding: 0px;
-}
-
-form#chat label {
-    width: auto;
-    margin: auto;
-    margin-left: 5px;
-}
-
-form#chat input {
-    flex-grow: 1;
-    margin: 5px;
-}
-
-form#chat input[type="submit"] {
-    width: auto;
-    margin: 5px;
-}
-
-#rooms {
+#rooms, #chat {
     background-color: #fff8;
     border: 2px solid #fff;
     border-radius: 10px;
     width: 50%;
     margin: auto;
     padding: 10px;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+}
+
+#chat_messages {
+    flex-grow: 1;
+    background-color: #ddd8;
+    border: 1px solid #888;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    overflow-y: scroll;
+}
+
+#chat_messages .message {
+    background-color: #48f5;
+    text-align: left;
+    font-size: 80%;
+    overflow-wrap: break-word;
+}
+
+#chat_messages .message:nth-child(2n) {
+    background-color: #48f3;
+}
+
+#chat_messages .system {
+    color: #00d;
+}
+
+form#chat_form {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+form#chat_form label {
+    width: auto;
+    margin: auto;
+    margin-left: 5px;
+}
+
+form#chat_form input {
+    flex-grow: 1;
+    margin: 5px;
+}
+
+form#chat_form input[type="submit"] {
+    width: auto;
+    margin: 5px;
 }
 
 .success {

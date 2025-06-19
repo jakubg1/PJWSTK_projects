@@ -46,6 +46,15 @@ function wrapError(onError) {
     }
 }
 
+// Tries to parse JSON from given content, returns the input otherwise.
+function tryJson(content) {
+    try {
+        return JSON.parse(content);
+    } catch (e) {
+        return content;
+    }
+}
+
 // Sends a POST request to the provided endpoint.
 // async needs to be turned off when using with `$(window).on("beforeunload")` to make it work on Firefox.
 // See here: https://stackoverflow.com/questions/22776544/why-is-jquery-onbeforeunload-not-working-in-chrome-and-firefox
