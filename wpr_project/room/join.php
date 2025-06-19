@@ -1,6 +1,6 @@
 <?php
 include "../functions.php";
-
+session_start();
 html_start("Dołączanie do pokoju");
 
 html_title("Trwa dołączanie do pokoju...");

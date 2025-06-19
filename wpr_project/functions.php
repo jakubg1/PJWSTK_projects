@@ -11,7 +11,7 @@ include "objects/Room.php";
 include "objects/User.php";
 include "tick.php";
 
-function html_start($title = "Stuff is cooking here") {
+function html_start($title = "Stuff is cooking here", $uncentered = false) {
     global $FS_PREFIX;
     echo "<html>";
     echo "<head>";
@@ -22,15 +22,34 @@ function html_start($title = "Stuff is cooking here") {
     echo "<script src='" . $FS_PREFIX . "/functions.js'></script>";
     echo "</head>";
     echo "<body>";
+    html_topbar();
     echo "<div id='main'>";
-    echo "<div id='content'>";
+    if (!$uncentered) {
+        echo "<div id='content'>";
+    }
 }
 
-function html_end() {
-    echo "</div>";
+function html_end($uncentered = false) {
+    if (!$uncentered) {
+        echo "</div>";
+    }
     echo "</div>";
     echo "</body>";
     echo "</html>";
+}
+
+// Places a top bar which shows who are we logged on as.
+function html_topbar() {
+    global $FS_PREFIX;
+    $user = get_user();
+    echo "<div id='topbar'>";
+    if ($user) {
+        echo "Zalogowany jako: " . $user->get_name();
+        echo " | <a href='" . $FS_PREFIX . "/user/logout.php'>Wyloguj się</a>";
+    } else {
+        echo "Nie jesteś zalogowany | <a href='" . $FS_PREFIX . "/user/login.php'>Zaloguj się</a>";
+    }
+    echo "</div>";
 }
 
 // Places a <h1> header.

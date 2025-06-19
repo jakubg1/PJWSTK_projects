@@ -46,7 +46,7 @@ if ($room->is_full()) {
 }
 
 // Leave the old room if we were in any.
-if ($_SESSION["room_id"]) {
+if (isset($_SESSION["room_id"])) {
     $old_room = Room::get($_SESSION["room_id"]);
     if ($old_room && $old_room != $room) {
         $old_room->remove_player($user);

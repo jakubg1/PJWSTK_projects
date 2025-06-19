@@ -1,27 +1,43 @@
 <?php
 include "../functions.php";
-
-html_start();
 session_start();
+html_start("Gra", true);
 
-echo "Jesteś w pokoju.<br/>";
+// game_wrapper
+// - game
+// - game_under
+//   - chat
+//   - players
+
+echo "<div id='game_wrapper'>";
+echo "<div id='game'>";
 $room = Room::get($_SESSION["room_id"]);
-echo "ID: " . $room->get_id() . "<br/>";
-echo "Nazwa: " . $room->get_name() . "<br/>";
-echo "<a id='leave' href='list.php?game=" . $room->get_game()->get_game_type() . "'>Opuść pokój</a>";
-echo "<br/>";
+if ($room) {
+    echo "Jesteś w pokoju.<br/>";
+    echo "ID: " . $room->get_id() . "<br/>";
+    echo "Nazwa: " . $room->get_name() . "<br/>";
+    echo "<a id='leave' href='list.php?game=" . $room->get_game()->get_game_type() . "'>Opuść pokój</a>";
+} else {
+    echo "Nie jesteś w pokoju!";
+}
+echo "</div>";
+echo "<div id='game_under'>";
 echo "<div id='chat'>";
 echo "<div id='header'>Czat</div>";
-echo "<div id='chat_messages'>";
-echo "</div>";
+echo "<div id='chat_messages'></div>";
 echo "<form id='chat_form' action='/endpoints/room/message.php' method='POST'>";
 echo "<label for='message'>Wiadomość:</label>";
 echo "<input type='text' id='message' name='message' required='true' maxlength='255'>";
 echo "<input type='submit' value='Wyślij'>";
 echo "</form>";
 echo "</div>";
+echo "<div id='players'>";
+echo "<div id='header'>Lista graczy</div>";
+echo "</div>";
+echo "</div>";
+echo "</div>";
 
-html_end();
+html_end(true);
 ?>
 
 <script>

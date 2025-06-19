@@ -1,12 +1,14 @@
 body {
+    display: flex;
+    flex-direction: column;
     font-family: 'Comic Sans MS', Arial;
+    height: 100%;
     margin: 0px;
 }
 
 #main {
     background-image: linear-gradient(#5be, #b8e);
     height: 100%;
-
     align-content: center;
     text-align: center;
     overflow-y: auto;
@@ -28,7 +30,23 @@ body {
     margin-right: 25%;
 }
 
-/* Formularz */
+/* Pasek u gory strony */
+
+#topbar {
+    background-image: linear-gradient(#24c, #12f);
+    border-bottom: 1px solid #237;
+    box-shadow: 0px 1px 2px #0004;
+    color: #fff;
+    padding-left: 5px;
+    padding-right: 5px;
+    z-index: 1;
+}
+
+#topbar a {
+    color: #8f8;
+}
+
+/* Formularze */
 
 form {
     background-color: #ddd8;
@@ -79,15 +97,17 @@ form input[type="submit"]:active {
 
 #header {
     background-image: linear-gradient(#24c, #12f);
-    border: 1px solid #6af;
+    border: 1px solid #3af;
     border-right: 1px solid #237;
     border-bottom: 1px solid #237;
+    box-shadow: 0px 1px 2px #0004;
     color: #fff;
+    z-index: 1;
 }
 
-/* Czat */
+/* Lista pokoi */
 
-#rooms, #chat {
+#rooms {
     background-color: #fff8;
     border: 2px solid #fff;
     border-radius: 10px;
@@ -96,10 +116,36 @@ form input[type="submit"]:active {
     padding: 10px;
 }
 
+/* Gra */
+
+#game_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#game {
+    flex-grow: 1;
+    background-color: #f0f;
+}
+
+#game_under {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 200px;
+}
+
+#players {
+    width: 400px;
+}
+
+/* Czat */
+
 #chat {
     display: flex;
     flex-direction: column;
-    height: 200px;
+    flex-grow: 1;
 }
 
 #chat_messages {
@@ -113,6 +159,8 @@ form input[type="submit"]:active {
 
 #chat_messages .message {
     background-color: #48f5;
+    padding-left: 3px;
+    padding-right: 3px;
     text-align: left;
     font-size: 80%;
     overflow-wrap: break-word;
@@ -150,19 +198,19 @@ form#chat_form input[type="submit"] {
     margin: 5px;
 }
 
+/* Status box */
+
 .success {
-    background-image: linear-gradient(#4b3, #694);
-    border: 2px solid #484;
-    border-radius: 4px;
+    background-image: linear-gradient(#3d6, #1b5);
+    border: 1px solid #271;
     width: 30%;
     margin: auto;
     padding: 10px;
 }
 
 .failure {
-    background-image: linear-gradient(#e41, #c53);
-    border: 2px solid #a44;
-    border-radius: 4px;
+    background-image: linear-gradient(#f63, #d31);
+    border: 1px solid #a31;
     width: 30%;
     margin: auto;
     padding: 10px;
