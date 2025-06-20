@@ -41,3 +41,15 @@ Stan gry (jeszcze nie finalne)
 sesja ($_SESSION):
 - user_id - ID użytkownika jako który jesteśmy zalogowani (lub ID tymczasowego konta gościa)
 - room_id - ID pokoju w którym jesteśmy (brak jeżeli nie jesteśmy w żadnym pokoju)
+
+
+
+Do zrobienia (20.06.2025):
+- lista graczy w pokoju
+- podpięcie warcab pod serwer
+- logika gry (początek, koniec, statystyki)
+- panel administracyjny (zrzut bazy danych, itp.)
+- panel konta (zdjęcia profilowe)
+- goście jako ciasteczka
+- bany, wyciszenia
+- UNO...?

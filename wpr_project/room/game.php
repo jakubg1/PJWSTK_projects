@@ -35,6 +35,21 @@ echo "</form>";
 echo "</div>";
 echo "<div id='player_list'>";
 echo "<div id='header'>Lista graczy</div>";
+// nazwa
+// zdjęcie profilowe
+// czy jest hostem
+// kolor
+// wskaźnik ruchu
+// wygrane, przegrane, remisy
+// timestamp (debug)
+// przyciski
+// - wyrzuć (host, admin)
+// - promuj na hosta (host, admin)
+// - wycisz (admin)
+// - zbanuj (admin)
+// np.
+//   [   ] user1 (host)       W:3 / P:2 / R:0  >  (czarny)
+//   [   ] ts:xx:xx:xx [Wyrzuć] [Promuj] [Wycisz] [Zbanuj]
 echo "<div id='players'></div>";
 echo "<div class='pane'>";
 echo "<input id='btn_leave' class='red' type='submit' value='Opuść pokój'>";

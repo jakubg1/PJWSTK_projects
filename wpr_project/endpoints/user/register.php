@@ -18,7 +18,7 @@ http_response_code(500);
 
 include "../../functions.php";
 
-if (empty($_POST["user"]) || empty($_POST["email"]) || empty($_POST["password"])) {
+if (empty($_POST["user"]) || substr($_POST["user"], 0, 1) == "_" || empty($_POST["email"]) || empty($_POST["password"])) {
     http_response_code(400);
     return;
 }

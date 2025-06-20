@@ -26,6 +26,10 @@ html_end();
                 status("Nazwa użytkownika nie może być dłuższa niż 32 znaki!");
                 return false;
             }
+            if (formData.get("user").substring(0, 1) == "_") {
+                status("Nazwa użytkownika nie może zaczynać się od '_'!");
+                return false;
+            }
             if (formData.get("password").length < 6) {
                 status("Hasło musi mieć przynajmniej 6 znaków!");
                 return false;
