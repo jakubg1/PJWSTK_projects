@@ -3,6 +3,7 @@ class User {
     private $id;
     private $name;
     private $type;
+    private $email;
     private $password;
     private $created_at;
     private $last_active_at;
@@ -31,6 +32,14 @@ class User {
         $this->type = $type;
     }
 
+    public function get_email() {
+        return $this->email;
+    }
+
+    public function set_email($email) {
+        $this->email = $email;
+    }
+
     public function check_password($password) {
         return password_verify($password, $this->password);
     }
@@ -52,11 +61,12 @@ class User {
     }
 
     // Creates a new user
-    public static function create($name, $password) {
+    public static function create($name, $email, $password) {
         $user = new User();
         $user->id = null;
         $user->name = $name;
         $user->type = "user";
+        $user->email = $email;
         $user->set_password($password);
         $user->created_at = get_timestamp();
         $user->last_active_at = get_timestamp();
@@ -75,9 +85,15 @@ class User {
         return User::load($row);
     }
 
+    // Retrieves a user by e-mail address
+    public static function get_by_email($email) {
+        $row = db_select_one("SELECT * FROM users WHERE email = ?", [$email]);
+        return User::load($row);
+    }
+
     // Saves the user to database
     public function save() {
-        return db_save_object($this, "users", ["id", "name", "type", "password", "created_at", "last_active_at"]);
+        return db_save_object($this, "users", ["id", "name", "type", "email", "password", "created_at", "last_active_at"]);
     }
 
     // Loads the user from given database row
@@ -89,6 +105,7 @@ class User {
         $user->id = $row["id"];
         $user->name = $row["name"];
         $user->type = $row["type"];
+        $user->email = $row["email"];
         $user->password = $row["password"];
         $user->created_at = $row["created_at"];
         $user->last_active_at = $row["last_active_at"];
@@ -101,6 +118,7 @@ class User {
             "id" => $this->id,
             "name" => $this->name,
             "type" => $this->type,
+            "email" => $this->email,
             "password" => $this->password,
             "created_at" => $this->created_at,
             "last_active_at" => $this->last_active_at

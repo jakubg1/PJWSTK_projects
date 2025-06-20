@@ -43,15 +43,22 @@ function html_end($uncentered = false) {
 function html_topbar() {
     global $FS_PREFIX;
     $user = get_user();
+    $room = get_room();
     echo "<div id='topbar'>";
     if ($user) {
         echo "Zalogowany jako: " . $user->get_name();
-        echo " | <a href='" . $FS_PREFIX . "/user/logout.php'>Wyloguj się</a>";
-        if (is_user_admin()) {
-            echo " | <a href='" . $FS_PREFIX . "/admin'>Panel administratora</a>";
+        if (!$room) {
+            echo " | <a href='" . $FS_PREFIX . "/user/logout.php'>Wyloguj się</a>";
+            if (is_user_admin()) {
+                echo " | <a href='" . $FS_PREFIX . "/admin'>Panel administratora</a>";
+            }
         }
     } else {
-        echo "Nie jesteś zalogowany | <a href='" . $FS_PREFIX . "/user/login.php'>Zaloguj się</a>";
+        echo "Nie jesteś zalogowany";
+        if (!$room) {
+            echo " | <a href='" . $FS_PREFIX . "/user/login.php'>Zaloguj się</a>";
+            echo " | <a href='" . $FS_PREFIX . "/user/register.php'>Zarejestruj się</a>";
+        }
     }
     echo "</div>";
 }
@@ -94,7 +101,7 @@ function html_form($id, $action, $fields) {
         if (isset($field["max_length"])) {
             $input .= " maxlength='" . $field["max_length"] . "'";
         }
-        $input .= ">";
+        $input .= " autocomplete='off'>";
         echo $input;
     }
     echo "</form>";
@@ -137,6 +144,14 @@ function ensure_admin() {
         http_response_code(403);
         exit;
     }
+}
+
+// Returns the current room stored in this session.
+function get_room() {
+    if (!isset($_SESSION["room_id"])) {
+        return null;
+    }
+    return Room::get($_SESSION["room_id"]);
 }
 
 $GAME_TYPES = [

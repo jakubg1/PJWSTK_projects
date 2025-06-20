@@ -130,6 +130,29 @@ form input[type="submit"] {
     z-index: 1;
 }
 
+/* Lista gier */
+
+#games {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background-color: #fff8;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+}
+
+.game {
+    height: 35px;
+    align-content: center;
+}
+
+.game img {
+    height: 24px;
+    padding-right: 5px;
+}
+
 /* Lista pokoi */
 
 #rooms {

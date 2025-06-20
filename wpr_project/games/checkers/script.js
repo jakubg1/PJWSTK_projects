@@ -23,7 +23,6 @@ function generate2DArray(w, h) {
 // Game control
 
 function onTileClicked(x, y) {
-    console.log(x, y);
     // If we've got a pawn selected already, check if we can make a move.
     if (selectedPawn != null) {
         let move = getMove(selectedPawn.x, selectedPawn.y, x, y, selectedPawn.locked);

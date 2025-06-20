@@ -29,7 +29,7 @@ echo "<div id='header'>Czat</div>";
 echo "<div id='chat_messages'></div>";
 echo "<form id='chat_form' action='/endpoints/room/message.php' method='POST'>";
 echo "<label for='message'>Wiadomość:</label>";
-echo "<input type='text' id='message' name='message' required='true' maxlength='255'>";
+echo "<input type='text' id='message' name='message' required='true' maxlength='255' autocomplete='off'>";
 echo "<input type='submit' value='Wyślij'>";
 echo "</form>";
 echo "</div>";

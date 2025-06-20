@@ -5,12 +5,13 @@ DROP DATABASE IF EXISTS gameserver;
 CREATE DATABASE gameserver;
 USE gameserver;
 
--- Użytkownicy (wliczając gości)
--- goście: name generowane, password=null (logowanie tylko po sesji, konta gościa kasowane 24 godziny po ostatniej aktywności)
+-- Użytkownicy (wyłączając gości!)
+-- Dane gości są przechowywane lokalnie w przeglądarce jako ciasteczko.
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(32) UNIQUE NOT NULL,
     type ENUM('user', 'admin', 'guest') NOT NULL,
+    email VARCHAR(64) UNIQUE NOT NULL,
     password VARCHAR(256),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     last_active_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()

@@ -7,6 +7,7 @@ html_status_box();
 html_title("Zarejestruj się");
 $fields = [
     ["id" => "user", "type" => "text", "label" => "Nazwa użytkownika", "required" => true],
+    ["id" => "email", "type" => "email", "label" => "Adres e-mail", "required" => true],
     ["id" => "password", "type" => "password", "label" => "Hasło", "required" => true],
     ["id" => "password_rep", "type" => "password", "label" => "Powtórz hasło", "required" => true],
     ["type" => "submit", "value" => "Załóż konto"]
