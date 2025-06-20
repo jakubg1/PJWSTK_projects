@@ -31,22 +31,23 @@ body {
 /* https://stackoverflow.com/questions/23362157/how-to-make-a-css-triangle-background-on-a-div-without-using-border-and-image */
 
 .tile.white {
-    background-image: linear-gradient(to bottom right, #fff 0%, #fff 50%, #888 50%, #888 100%);
+    background-image: linear-gradient(to bottom right, #ffd 0%, #ffd 50%, #997 50%, #997 100%);
 }
 
 .tile.white .inner {
-    background-color: #ddd;
+    background-color: #eeb;
 }
 
 .tile.black {
-    background-image: linear-gradient(to bottom right, #666 0%, #666 50%, #000 50%, #000 100%);
+    background-image: linear-gradient(to bottom right, #777 0%, #777 50%, #222 50%, #222 100%);
 }
 
 .tile.black .inner {
-    background-color: #222;
+    background-color: #444;
 }
 
 /* Pawns */
+
 #pawns {
     position: absolute;
     top: 0vh;
@@ -58,7 +59,9 @@ body {
     height: 12.5vh;
 }
 
-.pawn .layer1, .pawn .layer2, .pawn .layer3, .pawn .layer4 {
+/* Appearance */
+
+.pawn .layer0, .pawn .layer1, .pawn .layer2, .pawn .layer3, .pawn .layer4 {
     position: absolute;
     z-index: 1;
     border-radius: 50%;
@@ -69,6 +72,7 @@ body {
     left: 10%;
     width: 80%;
     height: 80%;
+    box-shadow: 1.5vh 1.5vh 0.3vh #0008;
 }
 
 .pawn .layer2 {
@@ -122,4 +126,33 @@ body {
 
 .pawn.black .layer4 {
     background-image: linear-gradient(to bottom right, #000 0%, #000 20%, #222 80%, #222 100%);
+}
+
+/* Pawn selection */
+
+@keyframes pawnSelection {
+    0% {
+        background-color: #0ccc;
+    }
+
+    50% {
+        background-color: #0cc4;
+    }
+
+    100% {
+        background-color: #0ccc;
+    }
+}
+
+.pawn .layer0 {
+    top: 3%;
+    left: 3%;
+    width: 94%;
+    height: 94%;
+}
+
+.pawn.selected .layer0 {
+    animation: pawnSelection linear;
+    animation-duration: 1500ms;
+    animation-iteration-count: infinite;
 }

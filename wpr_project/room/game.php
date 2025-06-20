@@ -47,6 +47,9 @@ html_end(true);
 ?>
 
 <script>
+    // Access Checkers board:
+    // $("#game")[0].contentWindow.removePawn(1, 0);
+
     // TODO: Maybe a better way to store/fetch the game type?
     <?php
         if ($room) {
@@ -97,7 +100,8 @@ html_end(true);
                 let data = tryJson(response);
                 clearPlayerList();
                 for (let i = 0; i < data.players.length; i++) {
-                    addPlayer(data.players[i].name);
+                    let player = data.players[i];
+                    addPlayer(player.name + " (" + data.room.players[player.id].last_heartbeat_at + ")");
                 }
             }
         );
