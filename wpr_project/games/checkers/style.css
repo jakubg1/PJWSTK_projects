@@ -20,12 +20,26 @@ body {
     height: 100%;
 }
 
-.tile .inner {
+.tile {
     position: relative;
+}
+
+.tile .inner {
+    position: absolute;
     top: 4%;
     left: 4%;
     width: 92%;
     height: 92%;
+}
+
+.tile.selected .select {
+    position: absolute;
+    top: 2vh;
+    left: 2vh;
+    width: 6.5vh;
+    height: 6.5vh;
+    border-radius: 50%;
+    border: 1vh solid #0ccc;
 }
 
 /* https://stackoverflow.com/questions/23362157/how-to-make-a-css-triangle-background-on-a-div-without-using-border-and-image */
@@ -39,11 +53,11 @@ body {
 }
 
 .tile.black {
-    background-image: linear-gradient(to bottom right, #777 0%, #777 50%, #222 50%, #222 100%);
+    background-image: linear-gradient(to bottom right, #864 0%, #864 50%, #321 50%, #321 100%);
 }
 
 .tile.black .inner {
-    background-color: #444;
+    background-color: #643;
 }
 
 /* Pawns */
@@ -96,6 +110,13 @@ body {
     height: 30%;
 }
 
+.pawn.queen .layer4 {
+    top: 28%;
+    left: 28%;
+    width: 44%;
+    height: 44%;
+}
+
 .pawn.white .layer1 {
     background-image: linear-gradient(to bottom right, #ddd 0%, #ddd 10%, #999 90%, #999 100%);
 }
@@ -126,6 +147,38 @@ body {
 
 .pawn.black .layer4 {
     background-image: linear-gradient(to bottom right, #000 0%, #000 20%, #222 80%, #222 100%);
+}
+
+.pawn.queen.white .layer1 {
+    background-image: linear-gradient(to bottom right, #fff 0%, #fff 20%, #fff 80%, #fff 100%);
+}
+
+.pawn.queen.white .layer2 {
+    background-image: linear-gradient(to bottom right, #aaa 0%, #aaa 10%, #ddd 90%, #ddd 100%);
+}
+
+.pawn.queen.white .layer3 {
+    background-image: linear-gradient(to bottom right, #999 0%, #999 10%, #aaa 90%, #aaa 100%);
+}
+
+.pawn.queen.white .layer4 {
+    background-image: linear-gradient(to bottom right, #aaa 0%, #aaa 10%, #ddd 90%, #ddd 100%);
+}
+
+.pawn.queen.black .layer1 {
+    background-image: linear-gradient(to bottom right, #222 0%, #222 20%, #222 80%, #222 100%);
+}
+
+.pawn.queen.black .layer2 {
+    background-image: linear-gradient(to bottom right, #080808 0%, #080808 10%, #111 90%, #111 100%);
+}
+
+.pawn.queen.black .layer3 {
+    background-image: linear-gradient(to bottom right, #000 0%, #000 10%, #080808 90%, #080808 100%);
+}
+
+.pawn.queen.black .layer4 {
+    background-image: linear-gradient(to bottom right, #080808 0%, #080808 10%, #111 90%, #111 100%);
 }
 
 /* Pawn selection */
