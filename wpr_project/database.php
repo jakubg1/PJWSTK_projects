@@ -7,7 +7,13 @@ function db_connect() {
 
     $dsn = "mysql:host=" . $HOST . ";dbname=" . $DBNAME . "";
 
-    return new PDO($dsn, $USER, $PASS, [PDO::ATTR_PERSISTENT => true]);
+    try {
+        return new PDO($dsn, $USER, $PASS, [PDO::ATTR_PERSISTENT => true]);
+    } catch (Exception $e) {
+        html_start("Database error");
+        echo "Nie udało się połączyć z bazą danych! Czy zainicjalizowałeś już bazę?";
+        html_end();
+    }
 }
 
 function db_select_one($sql, $params = []) {
@@ -143,7 +149,7 @@ function db_save_object($object, $table, $keys, $arrays = []) {
     //         "table" => "room_players",
     //         "field" => "room_id",
     //         "subfield" => "user_id",
-    //         "subfields" => ["last_heartbeat_at"]
+    //         "subfields" => ["last_heartbeat_at"]    // NOTE: If there is a direct value instead of an array in the class, set this as the table's column name.
     //     ]
     // ]
     // Keys in this field are the keys in packed data which need to be stored in their own tables.
@@ -159,8 +165,14 @@ function db_save_object($object, $table, $keys, $arrays = []) {
             if (isset($data[$field][$id])) {
                 // Value exists in our data. Update the associated key.
                 $params = [$array["field"] => $data["id"], $array["subfield"] => $id];
-                foreach ($array["subfields"] as $subfield) {
-                    $params[$subfield] = $data[$field][$id][$subfield];
+                if (gettype($array["subfields"]) == "string") {
+                    // Singular key: value is direct.
+                    $params[$array["subfields"]] = $data[$field][$id];
+                } else {
+                    // Multiple keys: check all provided subfields.
+                    foreach ($array["subfields"] as $subfield) {
+                        $params[$subfield] = $data[$field][$id][$subfield];
+                    }
                 }
                 //echo "\n   >> * (" . $data["id"] . ", " . $id . ")";
                 db_update($array["table"], $params, [$array["field"] => true, $array["subfield"] => true]);
@@ -185,8 +197,14 @@ function db_save_object($object, $table, $keys, $arrays = []) {
             }
             // Value exists in our data, but not in the database. Let's add it.
             $params = [$array["field"] => $data["id"], $array["subfield"] => $subid];
-            foreach ($array["subfields"] as $subfield) {
-                $params[$subfield] = $subdata[$subfield];
+            if (gettype($array["subfields"]) == "string") {
+                // Singular key: value is direct.
+                $params[$array["subfields"]] = $subdata;
+            } else {
+                // Multiple keys: check all provided subfields.
+                foreach ($array["subfields"] as $subfield) {
+                    $params[$subfield] = $subdata[$subfield];
+                }
             }
             //echo "\n   >> + (" . $data["id"] . ", " . $subid . ")";
             db_insert($array["table"], $params);

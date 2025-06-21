@@ -100,6 +100,15 @@ input[type="submit"]:active {
     border-bottom: 1px solid #cf8;
 }
 
+input.small[type="submit"] {
+    display: inline;
+    width: auto;
+    padding: 0px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 90%;
+}
+
 input.red[type="submit"] {
     background-image: linear-gradient(#f63, #c31);
     border: 1px solid #fa8;
@@ -178,7 +187,7 @@ form input[type="submit"] {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 200px;
+    height: 25vh;
 }
 
 /* Gra */
@@ -260,7 +269,7 @@ form#chat_form input[type="submit"] {
 #player_list {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 600px;
 }
 
 #players {
@@ -270,6 +279,46 @@ form#chat_form input[type="submit"] {
     border-right: 1px solid #fff;
     border-bottom: 1px solid #fff;
     overflow-y: auto;
+}
+
+.player {
+    display: grid;
+    grid-template-columns: 53px 50% 25% auto;
+    grid-template-rows: 50% 50%;
+    background-color: #ddd8;
+    border: 1px solid #888;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    height: 48px;
+    text-align: left;
+}
+
+.player .profile_pic {
+    grid-row: span 2;
+    padding-right: 5px;
+}
+
+.player .profile_pic img {
+    width: 100%;
+}
+
+.player .name {
+}
+
+.player .stats {
+}
+
+.player .role {
+}
+
+.player .debug {
+    color: #444;
+    font-size: 80%;
+}
+
+.player .actions {
+    grid-column: span 2;
+    text-align: right;
 }
 
 /* Status box */

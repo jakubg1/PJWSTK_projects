@@ -35,21 +35,6 @@ echo "</form>";
 echo "</div>";
 echo "<div id='player_list'>";
 echo "<div id='header'>Lista graczy</div>";
-// nazwa
-// zdjęcie profilowe
-// czy jest hostem
-// kolor
-// wskaźnik ruchu
-// wygrane, przegrane, remisy
-// timestamp (debug)
-// przyciski
-// - wyrzuć (host, admin)
-// - promuj na hosta (host, admin)
-// - wycisz (admin)
-// - zbanuj (admin)
-// np.
-//   [   ] user1 (host)       W:3 / P:2 / R:0  >  (czarny)
-//   [   ] ts:xx:xx:xx [Wyrzuć] [Promuj] [Wycisz] [Zbanuj]
 echo "<div id='players'></div>";
 echo "<div class='pane'>";
 echo "<input id='btn_leave' class='red' type='submit' value='Opuść pokój'>";
@@ -62,8 +47,7 @@ html_end(true);
 ?>
 
 <script>
-    // Access Checkers board:
-    // $("#game")[0].contentWindow.removePawn(1, 0);
+    let game = $("#game")[0].contentWindow;
 
     // TODO: Maybe a better way to store/fetch the game type?
     <?php
@@ -116,7 +100,7 @@ html_end(true);
                 clearPlayerList();
                 for (let i = 0; i < data.players.length; i++) {
                     let player = data.players[i];
-                    addPlayer(player.name + " (" + data.room.players[player.id].last_heartbeat_at + ")");
+                    addPlayer(player, data.room.owner == player.id, "ts: " + data.room.players[player.id].last_heartbeat_at);
                 }
             }
         );
@@ -131,11 +115,11 @@ html_end(true);
             }
         }
     }
-
+    
+    // Handle chat messages.
     let chat = $("#chat_messages");
     let chatbox = $("#chat_form input#message");
 
-    // Handle chat messages.
     function chatMessage(message, sender) {
         chat.append("<div class='message'>");
         let msgbox = chat.find(".message").last();
@@ -151,15 +135,50 @@ html_end(true);
     let playerList = $("#players");
     
     // Handle the player list.
-    function addPlayer(name) {
+    function addPlayer(player, isOwner, debugInfo) {
         playerList.append("<div class='player'>");
-        let playerbox = playerList.find(".player").last();
-        playerbox.text(name);
+        let playerBox = playerList.find(".player").last();
+        playerBox.append("<div class='profile_pic'>");
+        playerBox.append("<div class='name'>");
+        playerBox.append("<div class='stats'>");
+        playerBox.append("<div class='role'>");
+        playerBox.append("<div class='debug'>");
+        playerBox.append("<div class='actions'>");
+        playerBox.find(".profile_pic").append("<img src='../profile_pictures/_default.png'>");
+        playerBox.find(".name").text(player.name + (isOwner ? " (host)" : ""));
+        playerBox.find(".stats").text("W:3 / P:2 / R:0");
+        playerBox.find(".role").text("(czarny)");
+        playerBox.find(".debug").text(debugInfo);
+        let actions = playerBox.find(".actions");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Wyrzuć'>");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Promuj'>");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Wycisz'>");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Zbanuj'>");
     }
 
     function clearPlayerList() {
         playerList.empty();
     }
+
+    // Handle the game.
+    window.addEventListener("message",
+        function(e) {
+            if (e.data.type == "move") {
+                let move = e.data.move;
+                console.log(move);
+                ajax(
+                    "/endpoints/room/game_move.php",
+                    {x: move.x, y: move.y, sx: move.sx, sy: move.sy},
+                    function(response) {
+                        console.log(response);
+                    },
+                    function(response) {
+                        chatMessage("ERROR!!!");
+                    }
+                );
+            }
+        }
+    )
 
     // Handle the chat form.
     registerForm(

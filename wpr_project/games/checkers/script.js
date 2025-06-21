@@ -26,8 +26,8 @@ function onTileClicked(x, y) {
     // If we've got a pawn selected already, check if we can make a move.
     if (selectedPawn != null) {
         let move = getMove(selectedPawn.x, selectedPawn.y, x, y, selectedPawn.locked);
-        console.log(move);
         if (move != null) {
+            onMove(move);
             unselectAllTiles();
             movePawn(selectedPawn.x, selectedPawn.y, move.x, move.y);
             let canContinue = false;
@@ -121,9 +121,9 @@ function getValidMoves(x, y) {
                 continue;
             // Add the move. If we are hopping over one enemy, make a killer move. Otherwise, a regular one.
             if (enemies.length == 0)
-                moves.push({killer: false, x: fx, y: fy});
+                moves.push({killer: false, sx: x, sy: y, x: fx, y: fy});
             else
-                moves.push({killer: true, x: fx, y: fy, kx: enemies[0].x, ky: enemies[0].y});
+                moves.push({killer: true, sx: x, sy: y, x: fx, y: fy, kx: enemies[0].x, ky: enemies[0].y});
         }
     }
     return moves;
@@ -288,6 +288,11 @@ function unselectPawn(x, y) {
         return;
     pawn.removeClass("selected");
     selectedPawn = null;
+}
+
+// Callbacks
+function onMove(move) {
+    window.top.postMessage({"type": "move", "move": move});
 }
 
 $(document).ready(onLoad);

@@ -4,6 +4,7 @@ class Game {
     private $game_type;
     private $started_at;
     private $finished_at;
+    private $states;
 
     public function get_id() {
         return $this->id;
@@ -37,23 +38,43 @@ class Game {
         $this->finished_at = get_timestamp();
     }
 
+    public function get_state($state) {
+        return $this->states[$state];
+    }
+
+    public function set_state($state, $value) {
+        $this->states[$state] = $value;
+    }
+
     // Creates a new game
     public static function create($game_type) {
         $game = new Game();
         $game->id = null;
         $game->game_type = $game_type;
+        $game->state = [];
         return $game;
     }
 
     // Retrieves a game by ID
     public static function get($id) {
         $row = db_select_one("SELECT * FROM games WHERE id = ?", [$id]);
+        if (!$row) {
+            return null;
+        }
+        $row["states"] = [];
+        $states_rows = db_select("SELECT * FROM game_states WHERE game_id = ?", [$id]);
+        foreach ($states_rows as $states_row) {
+            $row["states"][$states_row["state_id"]] = $states_row["value"];
+        }
         return Game::load($row);
     }
 
     // Saves the game to database
     public function save() {
-        return db_save_object($this, "games", ["id", "game_type", "started_at", "finished_at"]);
+        $arrays = [
+            "states" => ["table" => "game_states", "field" => "game_id", "subfield" => "state_id", "subfields" => "value"]
+        ];
+        return db_save_object($this, "games", ["id", "game_type", "started_at", "finished_at"], $arrays);
     }
 
     // Loads the game from given database row
@@ -66,6 +87,7 @@ class Game {
         $game->game_type = $row["game_type"];
         $game->started_at = $row["started_at"];
         $game->finished_at = $row["finished_at"];
+        $game->states = $row["states"];
         return $game;
     }
 
@@ -75,7 +97,8 @@ class Game {
             "id" => $this->id,
             "game_type" => $this->game_type,
             "started_at" => $this->started_at,
-            "finished_at" => $this->finished_at
+            "finished_at" => $this->finished_at,
+            "states" => $this->states
         ];
     }
 }
