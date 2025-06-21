@@ -14,6 +14,11 @@ Returned data:
 - list of events, where each event is:
     - {"type": "message", "message": <packed message data>, ["user": <packed user data>]}
         - `user` field does not exist if it's a system message.
+    - {"type": "move", "move": {"x": x, "y": y, "sx": sx, "sy": sy, "continue": continue, ["kx": kx, "ky": ky]}}
+        - `x`, `y` - target pawn position
+        - `sx`, `sy` - source pawn position
+        - `kx`, `ky` - killed pawn position (optional)
+        - `continue` - whether same player will continue with another move
 */
 
 http_response_code(500);
