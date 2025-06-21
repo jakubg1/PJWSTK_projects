@@ -269,7 +269,7 @@ form#chat_form input[type="submit"] {
 #player_list {
     display: flex;
     flex-direction: column;
-    width: 500px;
+    min-width: 500px;
 }
 
 #players {

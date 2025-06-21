@@ -129,15 +129,20 @@ class Room {
         return $this->get_player_count() >= $this->get_max_players();
     }
 
-    // Sends a message event to every other player in the room.
-    public function send_message_events($message) {
+    // Sends an event to every player in this room, optionally except the sender if provided.
+    public function send_event($type, $payload, $sender) {
         foreach ($this->get_players() as $player) {
-            if (!$message->get_user() || $player->get_id() != $message->get_user()->get_id()) {
-                $event = QueuedEvent::create($player, "message");
-                $event->set_payload(["id" => $message->get_id()]);
+            if (!$sender || $player->get_id() != $sender->get_id()) {
+                $event = QueuedEvent::create($player, $type);
+                $event->set_payload($payload);
                 $event->save();
             }
         }
+    }
+
+    // Sends a message event to every other player in the room.
+    public function send_message_events($message) {
+        $this->send_event("message", ["id" => $message->get_id()], $message->get_user());
     }
 
     // Creates a new room.

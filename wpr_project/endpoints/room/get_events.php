@@ -33,7 +33,8 @@ $result = [];
 // Fetch the messages.
 $events = QueuedEvent::get_list_by_user($user);
 foreach ($events as $event) {
-    if ($event->get_type() == "message") {
+    $type = $event->get_type();
+    if ($type == "message") {
         $payload = $event->get_payload();
         $message = Message::get($payload["id"]);
         $subresult = ["type" => "message", "message" => $message->pack()];
@@ -41,6 +42,8 @@ foreach ($events as $event) {
         if ($sender)
             $subresult["user"] = $sender->pack();
         $result[] = $subresult;
+    } elseif ($type == "move") {
+        $result[] = ["type" => "move", "move" => $event->get_payload()];
     }
     $event->delete();
 }

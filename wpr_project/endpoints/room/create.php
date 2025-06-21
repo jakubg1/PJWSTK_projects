@@ -62,7 +62,4 @@ $message->save();
 
 $room->send_message_events($message);
 
-// For now, set up the game here.
-//$game->set_state("pawns", " b b b bb b b b  b b b b                w w w w  w w w ww w w w ");
-
 http_response_code(200);

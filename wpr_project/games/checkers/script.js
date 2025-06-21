@@ -318,6 +318,13 @@ window.addEventListener("message",
                     }
                 }
             }
+        } else if (e.data.type == "setTurn") {
+            turn = e.data.turn;
+        } else if (e.data.type == "move") {
+            let move = e.data.move;
+            movePawn(parseInt(move.sx), parseInt(move.sy), parseInt(move.x), parseInt(move.y));
+            if (move.kx != null && move.ky != null)
+                removePawn(parseInt(move.kx), parseInt(move.ky));
         }
     }
 )

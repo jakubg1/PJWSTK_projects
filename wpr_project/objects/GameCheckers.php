@@ -2,6 +2,7 @@
 class GameCheckers extends Game {
     public function setup() {
         $this->set_state("pawns", " b b b bb b b b  b b b b                w w w w  w w w ww w w w ");
+        $this->set_state("turn", 1);
     }
 
     public function get_pawn($x, $y) {
@@ -39,6 +40,12 @@ class GameCheckers extends Game {
             $pawn->set_queen(true);
             $this->set_pawn($x, $y, $pawn);
         }
+    }
+
+    public function next_turn() {
+        $turn = $this->get_state("turn");
+        // 1 - white, 2 - black
+        $this->set_state("turn", $turn == 1 ? 2 : 1);
     }
 
     public function debug_print_state() {

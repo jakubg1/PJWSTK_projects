@@ -118,6 +118,10 @@ html_end(true);
             } else {
                 chatMessage(event.message.message);
             }
+        } else if (event.type == "move") {
+            game.postMessage({"type": "move", "move": event.move});
+        } else {
+            console.log(event);
         }
     }
     
@@ -174,6 +178,7 @@ html_end(true);
             // Send pawns to the board.
             let data = tryJson(response);
             game.postMessage({"type": "setPawns", "pawns": data.game.states.pawns});
+            game.postMessage({"type": "setTurn", "turn": data.game.states.turn == 1 ? "white" : "black"});
         }
     );
     // Receive input from the board and forward it to the server.

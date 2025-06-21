@@ -66,9 +66,14 @@ if ($kx != null && ($kx < 0 || $kx > 7) || $ky != null && ($ky < 0 || $ky > 7)) 
 $game->move_pawn($sx, $sy, $x, $y);
 if ($kx != null && $ky != null)
     $game->set_pawn($kx, $ky);
-if (!$continue)
+if (!$continue) {
     $game->try_promote_pawn($x, $y);
+    $game->next_turn();
+}
 $game->debug_print_state();
 $game->save();
+
+// Broadcast the move to other players in the room.
+$room->send_event("move", ["x" => $x, "y" => $y, "sx" => $sx, "sy" => $sy, "kx" => $kx, "ky" => $ky, "continue" => $continue], $user);
 
 http_response_code(200);
