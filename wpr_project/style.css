@@ -269,7 +269,7 @@ form#chat_form input[type="submit"] {
 #player_list {
     display: flex;
     flex-direction: column;
-    width: 600px;
+    width: 500px;
 }
 
 #players {
@@ -283,7 +283,7 @@ form#chat_form input[type="submit"] {
 
 .player {
     display: grid;
-    grid-template-columns: 53px 50% 25% auto;
+    grid-template-columns: 53px 40% 25% auto;
     grid-template-rows: 50% 50%;
     background-color: #ddd8;
     border: 1px solid #888;
@@ -309,6 +309,7 @@ form#chat_form input[type="submit"] {
 }
 
 .player .role {
+    text-align: right;
 }
 
 .player .debug {

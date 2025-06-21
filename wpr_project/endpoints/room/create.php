@@ -49,6 +49,7 @@ if (!empty($_POST["password"])) {
     $room->set_password($_POST["password"]);
 }
 $game = Game::create($_POST["game_type"]);
+$game->setup();
 $game->save();
 $room->set_game($game);
 $room->save();

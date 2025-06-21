@@ -47,12 +47,17 @@ html_end(true);
 ?>
 
 <script>
-    let game = $("#game")[0].contentWindow;
+    let game = null;
+    try {
+        game = $("#game")[0].contentWindow;
+    } catch (e) {
+        // Game failed to load.
+    }
 
     // TODO: Maybe a better way to store/fetch the game type?
     <?php
         if ($room) {
-            echo "let gameType = '" . $room->get_game() ->get_game_type() . "';";
+            echo "let gameType = '" . $room->get_game()->get_game_type() . "';";
         } else {
             echo "let gameType = null;";
         }
@@ -161,24 +166,35 @@ html_end(true);
     }
 
     // Handle the game.
+    // Initialize the game when the page has been just loaded.
+    ajax(
+        "/endpoints/room/get_game.php",
+        null,
+        function(response) {
+            // Send pawns to the board.
+            let data = tryJson(response);
+            game.postMessage({"type": "setPawns", "pawns": data.game.states.pawns});
+        }
+    );
+    // Receive input from the board and forward it to the server.
     window.addEventListener("message",
         function(e) {
             if (e.data.type == "move") {
                 let move = e.data.move;
-                console.log(move);
+                let canContinue = e.data.canContinue;
                 ajax(
                     "/endpoints/room/game_move.php",
-                    {x: move.x, y: move.y, sx: move.sx, sy: move.sy},
+                    {x: move.x, y: move.y, sx: move.sx, sy: move.sy, kx: move.kx, ky: move.ky, continue: canContinue},
                     function(response) {
                         console.log(response);
                     },
                     function(response) {
-                        chatMessage("ERROR!!!");
+                        chatMessage("Podczas wykonywania ruchu nastąpił nieoczekiwany błąd.");
                     }
                 );
             }
         }
-    )
+    );
 
     // Handle the chat form.
     registerForm(

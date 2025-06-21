@@ -46,16 +46,24 @@ class Game {
         $this->states[$state] = $value;
     }
 
+    public function setup() {
+        // Empty. Overridable by subclasses for initial game state setup!
+    }
+
     // Creates a new game
     public static function create($game_type) {
-        $game = new Game();
+        if ($game_type == "checkers")
+            $game = new GameCheckers();
+        else
+            $game = new Game();
         $game->id = null;
         $game->game_type = $game_type;
         $game->state = [];
         return $game;
     }
 
-    // Retrieves a game by ID
+    // Retrieves a game by ID.
+    // If this is a Checkers game, returns an instance of GameCheckers instead.
     public static function get($id) {
         $row = db_select_one("SELECT * FROM games WHERE id = ?", [$id]);
         if (!$row) {
@@ -78,11 +86,15 @@ class Game {
     }
 
     // Loads the game from given database row
+    // If this is a Checkers game, returns an instance of GameCheckers instead.
     private static function load($row) {
         if (!$row) {
             return null;
         }
-        $game = new Game();
+        if ($row["game_type"] == "checkers")
+            $game = new GameCheckers();
+        else
+            $game = new Game();
         $game->id = $row["id"];
         $game->game_type = $row["game_type"];
         $game->started_at = $row["started_at"];

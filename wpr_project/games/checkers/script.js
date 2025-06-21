@@ -27,7 +27,6 @@ function onTileClicked(x, y) {
     if (selectedPawn != null) {
         let move = getMove(selectedPawn.x, selectedPawn.y, x, y, selectedPawn.locked);
         if (move != null) {
-            onMove(move);
             unselectAllTiles();
             movePawn(selectedPawn.x, selectedPawn.y, move.x, move.y);
             let canContinue = false;
@@ -51,6 +50,7 @@ function onTileClicked(x, y) {
                 unselectPawn(x, y);
                 turn = turn == "white" ? "black" : "white";
             }
+            onMove(move, canContinue);
             return;
         }
         // Still exit if the selected pawn is locked.
@@ -154,21 +154,15 @@ function highlightValidMoves(x, y, killerOnly) {
 // HTML DOM management and board data management
 
 function generateBoard() {
-    // Generate tiles.
+    generateTiles();
+    // Pawn generation is done by loading the game state from the server.
+    //generatePawns();
+}
+
+function generateTiles() {
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
             addTile(x, y);
-        }
-    }
-    // Place pawns.
-    for (let x = 0; x < 8; x++) {
-        for (let y = 0; y < 8; y++) {
-            if ((x + y) % 2 == 0)
-                continue;
-            if (y <= 2)
-                addPawn(x, y, "black");
-            if (y >= 5)
-                addPawn(x, y, "white");
         }
     }
 }
@@ -204,7 +198,20 @@ function unselectAllTiles() {
     }
 }
 
-function addPawn(x, y, color) {
+function generatePawns() {
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            if ((x + y) % 2 == 0)
+                continue;
+            if (y <= 2)
+                addPawn(x, y, "black");
+            if (y >= 5)
+                addPawn(x, y, "white");
+        }
+    }
+}
+
+function addPawn(x, y, color, queen) {
     // Do not overwrite pawns.
     if (pawnTable[x][y] != null)
         return;
@@ -217,6 +224,8 @@ function addPawn(x, y, color) {
     pawn.append("<div class='layer3'>");
     pawn.append("<div class='layer4'>");
     pawn.addClass(color);
+    if (queen)
+        pawn.addClass("queen");
     // Update the click callback.
     pawn.off("click");
     pawn.on("click", (e) => onTileClicked(x, y));
@@ -291,8 +300,26 @@ function unselectPawn(x, y) {
 }
 
 // Callbacks
-function onMove(move) {
-    window.top.postMessage({"type": "move", "move": move});
+function onMove(move, canContinue) {
+    window.top.postMessage({"type": "move", "move": move, "canContinue": canContinue});
 }
+
+window.addEventListener("message",
+    function(e) {
+        if (e.data.type == "setPawns") {
+            let pawns = e.data.pawns;
+            for (let x = 0; x < 8; x++) {
+                for (let y = 0; y < 8; y++) {
+                    let pawn = pawns[y * 8 + x];
+                    if (pawn != " ") {
+                        let color = (pawn == "w" || pawn == "W") ? "white" : "black";
+                        let queen = pawn == "W" || pawn == "B";
+                        addPawn(x, y, color, queen);
+                    }
+                }
+            }
+        }
+    }
+)
 
 $(document).ready(onLoad);

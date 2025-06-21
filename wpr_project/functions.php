@@ -5,6 +5,8 @@ $FS_PREFIX = "/git/PJWSTK_projects/wpr_project";
 // Include everything here. This way we only need to include functions.php on any other page!
 include "database.php";
 include "objects/Game.php";
+include "objects/GameCheckers.php";
+include "objects/GameCheckersPawn.php";
 include "objects/Message.php";
 include "objects/QueuedEvent.php";
 include "objects/Room.php";

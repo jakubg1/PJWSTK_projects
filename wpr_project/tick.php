@@ -16,7 +16,10 @@ function tick() {
     // Detect player timeouts.
     $rooms = Room::get_list();
     foreach ($rooms as $room) {
+        $count = $room->get_player_count();
         $room->remove_dead_players();
-        $room->save();
+        // Save the room only if we did kick someone out.
+        if ($room->get_player_count() != $count)
+            $room->save();
     }
 }

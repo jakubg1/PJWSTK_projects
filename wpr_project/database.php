@@ -161,7 +161,13 @@ function db_save_object($object, $table, $keys, $arrays = []) {
         $rows = db_select($sql, [$data["id"]]);
         // Now that we know about all IDs existing in the database, update or remove all entries depending on whether or not they are present in our data.
         foreach ($rows as $row) {
-            $id = intval($row[$array["subfield"]]);
+            if (gettype($array["subfields"]) == "string") {
+                // Singular key: value is direct, there is only one array.
+                $id = $row[$array["subfield"]];
+            } else {
+                // Multiple keys. Integer ID is needed because we've got a list of arrays.
+                $id = intval($row[$array["subfield"]]);
+            }
             if (isset($data[$field][$id])) {
                 // Value exists in our data. Update the associated key.
                 $params = [$array["field"] => $data["id"], $array["subfield"] => $id];
