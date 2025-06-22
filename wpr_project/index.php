@@ -12,7 +12,7 @@ if (isset($_GET["logout"])) {
 
 echo "Witaj na portalu z dwoma grami!<br/>";
 $user = get_user();
-if ($user) {
+if ($user->get_type() != "guest") {
     echo "Witaj, <b>" . $user->get_name() . "</b>!<br/>";
     echo "Ostatnio byłeś aktywny: <b>" . $user->get_last_active_at() . "</b><br/>";
     $user->set_last_active_at();

@@ -45,7 +45,7 @@ html_end();
         },
         function(response) {
             let errors = {
-                409: "Ta nazwa użytkownika jest już zajęta! Musisz wybrać inną."
+                409: "Ta nazwa użytkownika lub e-mail są już zajęte! Musisz wybrać inne."
             };
             status(xhrError(response, errors));
         }

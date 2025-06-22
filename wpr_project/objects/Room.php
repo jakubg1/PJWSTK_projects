@@ -72,7 +72,7 @@ class Room {
 
     // Adds the provided player to the room.
     public function add_player($player) {
-        $this->players[$player->get_id()] = ["last_heartbeat_at" => get_timestamp()];
+        $this->players[$player->get_id()] = ["ready" => false, "last_heartbeat_at" => get_timestamp()];
     }
 
     // Removes the provided player from the room.
@@ -166,7 +166,7 @@ class Room {
         $row["players"] = [];
         $player_rows = db_select("SELECT * FROM room_players WHERE room_id = ?", [$id]);
         foreach ($player_rows as $player_row) {
-            $row["players"][$player_row["user_id"]] = ["last_heartbeat_at" => $player_row["last_heartbeat_at"]];
+            $row["players"][$player_row["user_id"]] = ["ready" => $player_row["ready"], "last_heartbeat_at" => $player_row["last_heartbeat_at"]];
         }
         return Room::load($row);
     }
@@ -195,7 +195,7 @@ class Room {
     public function save() {
         if ($this->get_player_count() > 0) {
             $arrays = [
-                "players" => ["table" => "room_players", "field" => "room_id", "subfield" => "user_id", "subfields" => ["last_heartbeat_at"]]
+                "players" => ["table" => "room_players", "field" => "room_id", "subfield" => "user_id", "subfields" => ["ready", "last_heartbeat_at"]]
             ];
             return db_save_object($this, "rooms", ["id", "name", "owner", "game_id", "password"], $arrays);
         } else {

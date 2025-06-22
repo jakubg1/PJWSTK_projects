@@ -47,7 +47,7 @@ function html_topbar() {
     $user = get_user();
     $room = get_room();
     echo "<div id='topbar'>";
-    if ($user) {
+    if ($user->get_type() != "guest") {
         echo "Zalogowany jako: " . $user->get_name();
         if (!$room) {
             echo " | <a href='" . $FS_PREFIX . "/user/logout.php'>Wyloguj się</a>";
@@ -56,7 +56,7 @@ function html_topbar() {
             }
         }
     } else {
-        echo "Nie jesteś zalogowany";
+        echo "Nie jesteś zalogowany (" . $user->get_name() . ")";
         if (!$room) {
             echo " | <a href='" . $FS_PREFIX . "/user/login.php'>Zaloguj się</a>";
             echo " | <a href='" . $FS_PREFIX . "/user/register.php'>Zarejestruj się</a>";
@@ -116,10 +116,20 @@ function get_timestamp() {
 
 // Returns the current user stored in the session.
 function get_user() {
-    if (!isset($_SESSION["user_id"])) {
-        return null;
+    if (isset($_SESSION["user_id"])) {
+        $user = User::get($_SESSION["user_id"]);
+        // There is a chance the user we were logged in as doesn't exist anymore.
+        if ($user)
+            return $user;
     }
-    return User::get($_SESSION["user_id"]);
+    // No user ID. Check the cookie for a guest account.
+    $user = User::get_from_cookie();
+    if ($user)
+        return $user;
+    // No stored user. Generate a new one and store it in a cookie.
+    $user = User::create_guest();
+    $user->save_cookie();
+    return $user;
 }
 
 function is_user_logged_in() {

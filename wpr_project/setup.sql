@@ -39,10 +39,12 @@ CREATE TABLE rooms (
 
 -- Asocjowanie pokojów z graczami
 -- Wpisy usuwane razem z pokojami
+-- ready: jeżeli wszyscy ustawią to na true i jest odpowiednia liczba osób, gra startuje
 -- last_heartbeat_at: aktualizowane gdy klient wyśle heartbeat, jeżeli nie będzie heartbeatu przez określony czas, gracz jest usuwany z timeoutem
 CREATE TABLE room_players (
     room_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
+    ready BOOLEAN NOT NULL,
     last_heartbeat_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );
 

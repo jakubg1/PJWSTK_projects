@@ -57,12 +57,12 @@ if (isset($_SESSION["room_id"])) {
 $room->add_player($user);
 $room->save();
 
-$_SESSION["room_id"] = $room->get_id();
-
 // Send a notification to everyone in the room that we've joined.
 $message = Message::create($room->get_game(), $user->get_name() . " dołączył do gry.");
 $message->save();
 
 $room->send_message_events($message);
+
+$_SESSION["room_id"] = $room->get_id();
 
 http_response_code(200);

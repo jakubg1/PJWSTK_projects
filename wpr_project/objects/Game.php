@@ -4,6 +4,7 @@ class Game {
     private $game_type;
     private $started_at;
     private $finished_at;
+    private $players;
     private $states;
 
     public function get_id() {
@@ -38,10 +39,34 @@ class Game {
         $this->finished_at = get_timestamp();
     }
 
+    // Returns a list of Users for each user which is in the game.
+    public function get_players() {
+        $players = [];
+        foreach ($this->players as $id => $data) {
+            $players[] = User::get($id);
+        }
+        return $players;
+    }
+
+    // Returns data associated with the provided player in this game.
+    public function get_player_data($player) {
+        return $this->players[$player->get_id()] ?? null;
+    }
+
+    // Adds the provided player to the game.
+    // You cannot remove a player from the game once they are added!
+    // If you want to modify the list of players after the game has been started,
+    // you need to abort the game and start a new one.
+    public function add_player($player) {
+        $this->players[$player->get_id()] = ["id" => count($this->players), "status" => null];
+    }
+
+    // Retrieves a game state with the provided name.
     public function get_state($state) {
         return $this->states[$state];
     }
 
+    // Assigns a game state with the provided name to the provided value.
     public function set_state($state, $value) {
         $this->states[$state] = $value;
     }
@@ -69,6 +94,11 @@ class Game {
         if (!$row) {
             return null;
         }
+        $row["players"] = [];
+        $player_rows = db_select("SELECT * FROM game_players WHERE game_id = ?", [$id]);
+        foreach ($player_rows as $player_row) {
+            $row["players"][$player_row["user_id"]] = ["id" => $player_row["id"], "status" => $player_row["status"]];
+        }
         $row["states"] = [];
         $states_rows = db_select("SELECT * FROM game_states WHERE game_id = ?", [$id]);
         foreach ($states_rows as $states_row) {
@@ -80,7 +110,8 @@ class Game {
     // Saves the game to database
     public function save() {
         $arrays = [
-            "states" => ["table" => "game_states", "field" => "game_id", "subfield" => "state_id", "subfields" => "value"]
+            "players" => ["table" => "game_players", "field" => "game_id", "subfield" => "user_id", "subfields" => ["id", "status"]],
+            "states" => ["table" => "game_states", "field" => "game_id", "subfield" => "state_id", "subfields" => "value"],
         ];
         return db_save_object($this, "games", ["id", "game_type", "started_at", "finished_at"], $arrays);
     }
@@ -99,6 +130,7 @@ class Game {
         $game->game_type = $row["game_type"];
         $game->started_at = $row["started_at"];
         $game->finished_at = $row["finished_at"];
+        $game->players = $row["players"];
         $game->states = $row["states"];
         return $game;
     }
@@ -110,6 +142,7 @@ class Game {
             "game_type" => $this->game_type,
             "started_at" => $this->started_at,
             "finished_at" => $this->finished_at,
+            "players" => $this->players,
             "states" => $this->states
         ];
     }

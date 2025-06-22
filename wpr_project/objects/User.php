@@ -60,7 +60,7 @@ class User {
         $this->last_active_at = get_timestamp();
     }
 
-    // Creates a new user
+    // Creates a new user.
     public static function create($name, $email, $password) {
         $user = new User();
         $user->id = null;
@@ -68,6 +68,20 @@ class User {
         $user->type = "user";
         $user->email = $email;
         $user->set_password($password);
+        $user->created_at = get_timestamp();
+        $user->last_active_at = get_timestamp();
+        return $user;
+    }
+
+    // Creates a new guest user.
+    // If `email` and `password` are not specified, this account will be a guest account.
+    public static function create_guest() {
+        $user = new User();
+        $user->id = null;
+        $user->name = "Guest" . random_int(10000, 99999);
+        $user->type = "guest";
+        $user->email = null;
+        $user->password = null;
         $user->created_at = get_timestamp();
         $user->last_active_at = get_timestamp();
         return $user;
@@ -91,9 +105,23 @@ class User {
         return User::load($row);
     }
 
+    // Retrieves a user from the cookie
+    public static function get_from_cookie() {
+        if (isset($_COOKIE["guest"])) {
+            return User::load(unserialize($_COOKIE["guest"]));
+        } else {
+            return null;
+        }
+    }
+
     // Saves the user to database
     public function save() {
         return db_save_object($this, "users", ["id", "name", "type", "email", "password", "created_at", "last_active_at"]);
+    }
+
+    // Saves the user to a cookie
+    public function save_cookie() {
+        setcookie("guest", serialize($this->pack()));
     }
 
     // Loads the user from given database row
