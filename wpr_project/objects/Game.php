@@ -116,6 +116,14 @@ class Game {
         return db_save_object($this, "games", ["id", "game_type", "started_at", "finished_at"], $arrays);
     }
 
+    // Removes the game from database, as well as any relevant player and state entries.
+    public function delete() {
+        db_remove("games", ["id" => $this->id]);
+        db_remove("game_players", ["game_id" => $this->id]);
+        db_remove("game_states", ["game_id" => $this->id]);
+        $this->id = null;
+    }
+
     // Loads the game from given database row
     // If this is a Checkers game, returns an instance of GameCheckers instead.
     private static function load($row) {

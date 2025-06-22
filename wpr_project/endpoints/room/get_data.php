@@ -11,7 +11,7 @@ Status codes:
 - 404 - user not in room
 
 Returned data:
-- {"room": <packed room data>, "players": [<packed player data>, ...]}
+- {"room": <packed room data>, "players": [<packed user data>, ...]}
 */
 
 http_response_code(500);

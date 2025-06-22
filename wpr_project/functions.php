@@ -160,10 +160,16 @@ function ensure_admin() {
 
 // Returns the current room stored in this session.
 function get_room() {
-    if (!isset($_SESSION["room_id"])) {
+    if (!isset($_SESSION["room_id"]))
+        return null;
+    $room = Room::get($_SESSION["room_id"]);
+    $user = get_user();
+    // If the player is no longer in the room for whatever reason, remove the room ID from the session.
+    if (!$room->get_player_data($user)) {
+        unset($_SESSION["room_id"]);
         return null;
     }
-    return Room::get($_SESSION["room_id"]);
+    return $room;
 }
 
 $GAME_TYPES = [

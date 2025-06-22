@@ -63,10 +63,100 @@ html_end(true);
         }
     ?>
 
-    // Whenever we leave this page, the server should know that we left the room.
-    $("#leave").on("click", function() {
-        ajax("/endpoints/room/leave.php", null, null, null, false);
-    });
+    let userData = null;
+    // Returns our user data.
+    function fetchUserData() {
+        ajax(
+            "/endpoints/user/get_data.php",
+            null,
+            function(response) {
+                let data = tryJson(response);
+                userData = data.user;
+            },
+            function(response) {
+                chatMessage("Nie udało się pobrać danych gracza!");
+            }
+        );
+    }
+    fetchUserData();
+    
+    // Handle chat messages.
+    let chat = $("#chat_messages");
+    let chatbox = $("#chat_form input#message");
+
+    function chatMessage(message, sender) {
+        chat.append("<div class='message'>");
+        let msgbox = chat.find(".message").last();
+        if (sender != null) {
+            msgbox.text("<" + sender + "> " + message);
+        } else {
+            msgbox.addClass("system");
+            msgbox.text(message);
+        }
+        chat.scrollTop(chat[0].scrollHeight);
+    }
+
+    let playerList = $("#players");
+    
+    // Handle the player list.
+    function addPlayer(player, isOwner, debugInfo) {
+        playerList.append("<div class='player'>");
+        let playerBox = playerList.find(".player").last();
+        playerBox.append("<div class='profile_pic'>");
+        playerBox.append("<div class='name'>");
+        playerBox.append("<div class='stats'>");
+        playerBox.append("<div class='role'>");
+        playerBox.append("<div class='debug'>");
+        playerBox.append("<div class='actions'>");
+        playerBox.find(".profile_pic").append("<img src='../profile_pictures/_default.png'>");
+        playerBox.find(".name").text(player.name + (isOwner ? " (host)" : ""));
+        if (userData != null && userData.id == player.id)
+            playerBox.find(".name").addClass("you");
+        playerBox.find(".stats").text("W:3 / P:2 / R:0");
+        playerBox.find(".role").text("(czarny)");
+        playerBox.find(".debug").text(debugInfo);
+        let actions = playerBox.find(".actions");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Wyrzuć'>");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Promuj'>");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Wycisz'>");
+        actions.append("<input id='btn_leave' class='small red' type='submit' value='Zbanuj'>");
+    }
+
+    function clearPlayerList() {
+        playerList.empty();
+    }
+
+    // Handle the chat form.
+    registerForm(
+        "chat_form",
+        function(formData) {
+            chatbox.val("");
+            return true;
+        },
+        function(response) {
+            let data = tryJson(response);
+            chatMessage(data.message.message, data.user.name);
+        },
+        function(response) {
+            let errors = {
+                403: "Nie jesteś zalogowany. Zaloguj się i spróbuj ponownie."
+            };
+            status(xhrError(response, errors));
+        }
+    );
+
+    // Handle the "Leave room" button.
+    registerButton(
+        "btn_leave",
+        "/endpoints/room/leave.php",
+        null,
+        function(response) {
+            redirect("/room/list.php?game=" + gameType);
+        },
+        function(response) {
+            redirect("/index.php");
+        }
+    );
 
     // Send a heartbeat every second so that the server does not kick us out.
     setInterval(heartbeat, 1000);
@@ -111,6 +201,7 @@ html_end(true);
         );
     }
 
+    // Handle events coming from the heartbeat.
     function handleEvent(event) {
         if (event.type == "message") {
             if (event.user) {
@@ -123,50 +214,6 @@ html_end(true);
         } else {
             console.log(event);
         }
-    }
-    
-    // Handle chat messages.
-    let chat = $("#chat_messages");
-    let chatbox = $("#chat_form input#message");
-
-    function chatMessage(message, sender) {
-        chat.append("<div class='message'>");
-        let msgbox = chat.find(".message").last();
-        if (sender != null) {
-            msgbox.text("<" + sender + "> " + message);
-        } else {
-            msgbox.addClass("system");
-            msgbox.text(message);
-        }
-        chat.scrollTop(chat[0].scrollHeight);
-    }
-
-    let playerList = $("#players");
-    
-    // Handle the player list.
-    function addPlayer(player, isOwner, debugInfo) {
-        playerList.append("<div class='player'>");
-        let playerBox = playerList.find(".player").last();
-        playerBox.append("<div class='profile_pic'>");
-        playerBox.append("<div class='name'>");
-        playerBox.append("<div class='stats'>");
-        playerBox.append("<div class='role'>");
-        playerBox.append("<div class='debug'>");
-        playerBox.append("<div class='actions'>");
-        playerBox.find(".profile_pic").append("<img src='../profile_pictures/_default.png'>");
-        playerBox.find(".name").text(player.name + (isOwner ? " (host)" : ""));
-        playerBox.find(".stats").text("W:3 / P:2 / R:0");
-        playerBox.find(".role").text("(czarny)");
-        playerBox.find(".debug").text(debugInfo);
-        let actions = playerBox.find(".actions");
-        actions.append("<input id='btn_leave' class='small red' type='submit' value='Wyrzuć'>");
-        actions.append("<input id='btn_leave' class='small red' type='submit' value='Promuj'>");
-        actions.append("<input id='btn_leave' class='small red' type='submit' value='Wycisz'>");
-        actions.append("<input id='btn_leave' class='small red' type='submit' value='Zbanuj'>");
-    }
-
-    function clearPlayerList() {
-        playerList.empty();
     }
 
     // Handle the game.
@@ -181,6 +228,7 @@ html_end(true);
             game.postMessage({"type": "setTurn", "turn": data.game.states.turn == 1 ? "white" : "black"});
         }
     );
+
     // Receive input from the board and forward it to the server.
     window.addEventListener("message",
         function(e) {
@@ -198,38 +246,6 @@ html_end(true);
                     }
                 );
             }
-        }
-    );
-
-    // Handle the chat form.
-    registerForm(
-        "chat_form",
-        function(formData) {
-            chatbox.val("");
-            return true;
-        },
-        function(response) {
-            let data = tryJson(response);
-            chatMessage(data.message.message, data.user.name);
-        },
-        function(response) {
-            let errors = {
-                403: "Nie jesteś zalogowany. Zaloguj się i spróbuj ponownie."
-            };
-            status(xhrError(response, errors));
-        }
-    );
-
-    // Handle the "Leave room" button.
-    registerButton(
-        "btn_leave",
-        "/endpoints/room/leave.php",
-        null,
-        function(response) {
-            redirect("/room/list.php?game=" + gameType);
-        },
-        function(response) {
-            redirect("/index.php");
         }
     );
 </script>

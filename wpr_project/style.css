@@ -305,6 +305,10 @@ form#chat_form input[type="submit"] {
 .player .name {
 }
 
+.player .name.you {
+    font-weight: bold;
+}
+
 .player .stats {
 }
 
